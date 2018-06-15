@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    tools:context=".activities.ActivityChooseExam">
+
+    <TextView
+        android:id="@+id/textviewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textSize="18sp"
+        android:text="Choose Exam"/>
+
+    <View
+        android:id="@+id/upperHorizontalRuler"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/textviewTitle"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="#888888"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ListView
+        android:id="@+id/listviewAvailableExams"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/upperHorizontalRuler"
+        android:layout_above="@+id/lowerHorizontalRuler" />
+
+    <View
+        android:id="@+id/lowerHorizontalRuler"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_above="@+id/textviewSelectedExam"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="#888888"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/textviewSelectedExam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/edittextSelectedExam"
+        android:textSize="18sp"
+        android:text="Choosen Exam:"/>
+
+    <EditText
+        android:id="@+id/edittextSelectedExam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonStartExam"
+        android:textSize="18sp"
+        android:inputType="none"
+        android:text=""/>
+
+    <Button
+        android:id="@+id/buttonStartExam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Start Exam" />
+
+</RelativeLayout>
