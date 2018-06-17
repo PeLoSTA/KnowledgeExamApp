@@ -3,7 +3,12 @@ package de.peterloos.knowledgeexam.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -12,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.R;
 import de.peterloos.knowledgeexam.models.Exam;
 
@@ -31,6 +37,29 @@ public class AvailableExamsAdapter extends ArrayAdapter<String> {
         this.ref = database.getReference();
     }
 
+    @Override
+    public View getView(int pos, View convertView, ViewGroup parent) {
+
+//        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
+//        TextView textView = (TextView) rowView.findViewById(R.id.label);
+//        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+//        textView.setText(values[position]);
+//        // change the icon for Windows and iPhone
+//        String s = values[position];
+//        if (s.startsWith("iPhone")) {
+//            imageView.setImageResource(R.drawable.no);
+//        } else {
+//            imageView.setImageResource(R.drawable.ok);
+//        }
+//
+//        return rowView;
+
+        Log.v(Globals.TAG, "==> getView !!!" );
+
+        return super.getView(pos, convertView, parent);
+    }
+
     public void update() {
 
         this.ref.child("exams").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -40,7 +69,7 @@ public class AvailableExamsAdapter extends ArrayAdapter<String> {
                 for (DataSnapshot child : snapshot.getChildren()) {
 
                     String key = child.getKey();
-                    Log.v("PeLo", "Found key ==> " + key);
+                    Log.v(Globals.TAG, "Found key ==> " + key);
 
                     Exam exam = child.getValue(Exam.class);
 
@@ -50,8 +79,8 @@ public class AvailableExamsAdapter extends ArrayAdapter<String> {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("", "getUser:onCancelled", databaseError.toException());
+            public void onCancelled(DatabaseError err) {
+                Log.w(Globals.TAG, "AvailableExamsAdapter:onCancelled", err.toException());
             }
         });
     }
