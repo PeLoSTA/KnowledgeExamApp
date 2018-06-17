@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -16,16 +16,25 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import de.peterloos.knowledgeexam.R;
+import de.peterloos.knowledgeexam.adapters.AvailableExamsAdapter;
 
-public class ActivityChooseExam extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
+
+
+public class ActivityChooseExam extends AppCompatActivity
+        implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private ListView listviewAvailableExams;
-    private ArrayAdapter<String> adapterAvailableExams;
+    private AvailableExamsAdapter adapter;
     private EditText edittextSelectedExam;
     private Button buttonStartExam;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.v("PeLo", "> onCreate");
+
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_choose_exam);
 
@@ -36,22 +45,15 @@ public class ActivityChooseExam extends AppCompatActivity implements AdapterView
         this.buttonStartExam =this.findViewById(R.id.buttonStartExam);
 
         // connect list view with adapter
-        ArrayList<String> exams = new ArrayList<String>();
-        exams.add("Mathe1");
-        exams.add("Linux Grundkurs");
-        exams.add("C# für Fortgeschrittene");
-
-        this.adapterAvailableExams =
-                new ArrayAdapter<String>(
-                        this.getApplicationContext(),
-                        android.R.layout.simple_list_item_1,
-                        exams);
-
-        this.listviewAvailableExams.setAdapter(this.adapterAvailableExams);
+        this.adapter = new AvailableExamsAdapter(this);
+        this.listviewAvailableExams.setAdapter(this.adapter);
 
         // handle click events on list view and button
         this.listviewAvailableExams.setOnItemClickListener(this);
         this.buttonStartExam.setOnClickListener(this);
+
+        this.adapter.update();
+        Log.v("PeLo", "< onCreate");
     }
 
     @Override
@@ -87,7 +89,7 @@ public class ActivityChooseExam extends AppCompatActivity implements AdapterView
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        String choosenExam = this.adapterAvailableExams.getItem(i);
+        String choosenExam = this.adapter.getItem(i);
 
         this.edittextSelectedExam.setText(choosenExam);
     }
