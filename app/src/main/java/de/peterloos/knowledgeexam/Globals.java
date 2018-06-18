@@ -6,5 +6,6 @@ public class Globals {
     public static final String TAG = "PeLo";
 
     // extras for passing data between activities
-    public static final String EXTRA_PIN_EXAM = "PIN_EXAM";
+    public static final String EXAM_PARCEL = "EXAM_PARCEL";
+    public static final String QUESTION_PARCEL = "QUESTION_PARCEL";
 }

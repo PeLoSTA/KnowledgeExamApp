@@ -30,7 +30,10 @@ public class ChooseExamActivity extends AppCompatActivity
 
     // miscellaneous
     private AvailableExamsAdapter adapter;
+
     private String pin;
+    // ODER
+    private Exam exam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +77,11 @@ public class ChooseExamActivity extends AppCompatActivity
                 Intent intent = new Intent(getApplicationContext(), TakeExamActivity.class);
                 // intent.putExtra(Globals.EXTRA_PIN_EXAM, pin);
 
-                ExamParcel parcel = new ExamParcel ("123", "asdasdsad", 10);
-                intent.putExtra(Globals.EXTRA_PIN_EXAM, parcel);
+                // ExamParcel parcel = new ExamParcel("123", "asdasdsad", 10);
+
+                ExamParcel parcel = new ExamParcel(ChooseExamActivity.this.exam);
+
+                intent.putExtra(Globals.EXAM_PARCEL, parcel);
 
                 ChooseExamActivity.this.startActivity(intent);
             }
@@ -93,7 +99,11 @@ public class ChooseExamActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        this.pin = this.adapter.getItem(i);
-        this.etSelectedExam.setText(this.pin);
+//        this.pin = this.adapter.getItem(i);
+//        this.etSelectedExam.setText(this.pin);
+
+        this.exam = this.adapter.getItem(i);
+        this.etSelectedExam.setText(this.exam.getPin());
+
     }
 }
