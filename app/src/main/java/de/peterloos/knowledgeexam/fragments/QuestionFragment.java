@@ -1,5 +1,6 @@
 package de.peterloos.knowledgeexam.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,10 +16,12 @@ import java.util.Locale;
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.R;
 import de.peterloos.knowledgeexam.adapters.AnswersAdapter;
+import de.peterloos.knowledgeexam.interfaces.OnAnswersListener;
+import de.peterloos.knowledgeexam.interfaces.OnQuestionAndAnswersListener;
 import de.peterloos.knowledgeexam.models.Answer;
 import de.peterloos.knowledgeexam.models.QuestionParcel;
 
-public class QuestionFragment extends Fragment {
+public class QuestionFragment extends Fragment implements OnAnswersListener {
 
     private TextView tvQuestionHeader;
     private TextView tvQuestion;
@@ -27,6 +30,8 @@ public class QuestionFragment extends Fragment {
     // data of this question
     // TODO: DAS IST ZU KLÄREN, OB EINE PARCEL KLASSE HIER GEEIGNET IST ....
     private QuestionParcel question;
+
+    private OnQuestionAndAnswersListener listener;
 
     // no-args c'tor required
     public QuestionFragment() {
@@ -59,24 +64,23 @@ public class QuestionFragment extends Fragment {
             this.question = bundle.getParcelable(Globals.QUESTION_PARCEL);
 
             Log.v(Globals.TAG, "FragmentQuestion ==> Frage " + question.getQuestion());
-        }
-        else {
+        } else {
             this.question = new QuestionParcel();
             this.question.setQuestionNumber(0);
             this.question.setQuestion("INTERNAL ERROR");
             this.question.setNumberAnswers(1);
-//            this.question.setAnswers(new String[] {"NO ANSWER"});
-//            this.question.setCorrectAnswer(0);
+            this.question.setAnswers(new String[] {"NO ANSWER"});
+            this.question.setCorrectAnswers(0);
 
             // TODO: Die nächste Zeile möglicherweise freischalten
-            // this.question.setUsersAnswers(new boolean[] {false});
+            // this.question.setUsersAnswer(0, new boolean[] {false});
         }
 
         // =============================================================================
 
         // setup UI
         int number = question.getQuestionNumber();
-        String header = String.format(Locale.getDefault(),"Frage %d:", number + 1);
+        String header = String.format(Locale.getDefault(), "Frage %d:", number + 1);
         this.tvQuestionHeader.setText(header);
         this.tvQuestion.setText(question.getQuestion());
 
@@ -85,14 +89,42 @@ public class QuestionFragment extends Fragment {
         Answer[] answers = new Answer[question.getNumberAnswers()];
         String[] tmp = question.getAnswers();
 
-        for (int i = 0; i < question.getNumberAnswers(); i++)
-        {
-            answers[i] = new Answer (tmp[i], false);
+        for (int i = 0; i < question.getNumberAnswers(); i++) {
+            answers[i] = new Answer(tmp[i], question.getUsersAnswer(i));
         }
 
-        AnswersAdapter adapter = new AnswersAdapter(this.getActivity(),  R.layout.answer_row, answers);
-        // adapter.setOnAnswerChanged (this);
+        AnswersAdapter adapter = new AnswersAdapter(this.getActivity(), R.layout.answer_row, answers);
+        adapter.addOnAnswersListener(this);
         this.lvAnswers.setAdapter(adapter);
+    }
 
+    // implementation of interface 'OnAnswersListener'
+    @Override
+    public void answerSelected(int position, boolean checked) {
+
+        if (this.listener != null) {
+
+            Log.v(Globals.TAG, "FragmentQuestion:: answerSelected ===> Frage = " + question.getQuestionNumber() + ", Antwort zu " + position + ", checked = " + checked);
+
+            this.listener.answerOfQuestionSelected( question.getQuestionNumber(), position, checked);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            this.listener = (OnQuestionAndAnswersListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()  + " must implement OnQuestionAndAnswersListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+
+        this.listener = null;
+        super.onDetach();
     }
 }

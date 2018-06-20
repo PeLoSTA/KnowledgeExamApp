@@ -16,7 +16,7 @@ import java.util.Locale;
 
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.R;
-import de.peterloos.knowledgeexam.adapters.AvailableExamsAdapter;
+import de.peterloos.knowledgeexam.adapters.ExamsAdapter;
 import de.peterloos.knowledgeexam.models.Exam;
 import de.peterloos.knowledgeexam.models.ExamParcel;
 
@@ -29,7 +29,7 @@ public class ChooseExamActivity extends AppCompatActivity
     private Button btnStartExam;
 
     // miscellaneous
-    private AvailableExamsAdapter adapter;
+    private ExamsAdapter adapter;
 
     private String pin;
     // ODER
@@ -52,7 +52,7 @@ public class ChooseExamActivity extends AppCompatActivity
         this.btnStartExam.setOnClickListener(this);
 
         // connect list view with adapter
-        this.adapter = new AvailableExamsAdapter(this);
+        this.adapter = new ExamsAdapter(this);
         this.lvAvailableExams.setAdapter(this.adapter);
         this.adapter.update();
     }

@@ -3,26 +3,44 @@ package de.peterloos.knowledgeexam.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 
+import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.R;
+import de.peterloos.knowledgeexam.interfaces.OnAnswersListener;
 import de.peterloos.knowledgeexam.models.Answer;
 
 public class AnswersAdapter extends ArrayAdapter<Answer> {
 
     private final int resource;
 
+    private OnAnswersListener listener;
+
     static class ViewHolder {
         public CheckBox checkbox;
     }
 
+    // c'tor
     public AnswersAdapter(@NonNull Context context, int resource, @NonNull Answer[] answers) {
         super(context, resource, answers);
         this.resource = resource;
+        this.listener = null;
+    }
+
+    // public interface
+    public void addOnAnswersListener(OnAnswersListener listener)
+    {
+        this.listener = listener;
+    }
+
+    public void removeOnAnswersListener(OnAnswersListener l)
+    {
+        this.listener = null;
     }
 
     @Override
@@ -52,19 +70,21 @@ public class AnswersAdapter extends ArrayAdapter<Answer> {
         // TODO: Wenn das läuft, diese Variable weg-optimieren ....
         boolean isChecked = answer.getChecked();
         viewHolder.checkbox.setChecked( isChecked);
-        viewHolder.checkbox.setTag(new Integer(position));
+        viewHolder.checkbox.setTag(position);
 
-//        viewHolder.checkbox.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//
-//                CheckBox cb = (CheckBox) view;
-//                int pos = ((Integer) cb.getTag()).intValue();
-//                if (listener != null) {
-//
-//                    listener.answerSelected(pos, cb.isChecked());
-//                }
-//            }
-//        });
+        viewHolder.checkbox.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                CheckBox cb = (CheckBox) view;
+                int pos = ((Integer) cb.getTag()).intValue();
+                String msg = String.format("clicked at check box: %d ==> %b", pos, cb.isChecked());
+                Log.v(Globals.TAG, msg);
+                if (listener != null) {
+
+                    listener.answerSelected(pos, cb.isChecked());
+                }
+            }
+        });
 
         return convertView;
     }

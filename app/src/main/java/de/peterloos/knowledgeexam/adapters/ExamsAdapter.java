@@ -3,13 +3,7 @@ package de.peterloos.knowledgeexam.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,7 +12,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import de.peterloos.knowledgeexam.Globals;
-import de.peterloos.knowledgeexam.R;
 import de.peterloos.knowledgeexam.models.Exam;
 
 
@@ -26,7 +19,7 @@ import de.peterloos.knowledgeexam.models.Exam;
 // *   ERSTE VARIANTE DES ADAPTERS FÜR ZEICHENKETTEN
 // */
 //
-//public class AvailableExamsAdapter extends ArrayAdapter<String> {
+//public class ExamsAdapter extends ArrayAdapter<String> {
 //
 //    private String[] exams;
 //    private Context context;
@@ -34,7 +27,7 @@ import de.peterloos.knowledgeexam.models.Exam;
 //    private FirebaseDatabase database;
 //    private DatabaseReference ref;
 //
-//    public AvailableExamsAdapter(@NonNull Context context) {
+//    public ExamsAdapter(@NonNull Context context) {
 //        super(context, android.R.layout.simple_list_item_1);
 //        this.context = context;
 //
@@ -79,13 +72,13 @@ import de.peterloos.knowledgeexam.models.Exam;
 //                    Exam exam = child.getValue(Exam.class);
 //
 //                    // add pin of exam to listview
-//                    AvailableExamsAdapter.this.add(exam.getPin());
+//                    ExamsAdapter.this.add(exam.getPin());
 //                }
 //            }
 //
 //            @Override
 //            public void onCancelled(DatabaseError err) {
-//                Log.w(Globals.TAG, "AvailableExamsAdapter:onCancelled", err.toException());
+//                Log.w(Globals.TAG, "ExamsAdapter:onCancelled", err.toException());
 //            }
 //        });
 //    }
@@ -96,7 +89,7 @@ import de.peterloos.knowledgeexam.models.Exam;
  *   ZWEITE VARIANTE DES ADAPTERS FÜR OBJEKTE !!!
  */
 
-public class AvailableExamsAdapter extends ArrayAdapter<Exam> {
+public class ExamsAdapter extends ArrayAdapter<Exam> {
 
     private String[] exams;
     private Context context;
@@ -104,7 +97,7 @@ public class AvailableExamsAdapter extends ArrayAdapter<Exam> {
     private FirebaseDatabase database;
     private DatabaseReference ref;
 
-    public AvailableExamsAdapter(@NonNull Context context) {
+    public ExamsAdapter(@NonNull Context context) {
         super(context, android.R.layout.simple_list_item_1);
         this.context = context;
 
@@ -144,13 +137,13 @@ public class AvailableExamsAdapter extends ArrayAdapter<Exam> {
                     Exam exam = child.getValue(Exam.class);
 
                     // add pin of exam to listview
-                    AvailableExamsAdapter.this.add(exam);
+                    ExamsAdapter.this.add(exam);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError err) {
-                Log.w(Globals.TAG, "AvailableExamsAdapter:onCancelled", err.toException());
+                Log.w(Globals.TAG, "ExamsAdapter:onCancelled", err.toException());
             }
         });
     }
