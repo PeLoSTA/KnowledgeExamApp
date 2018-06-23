@@ -6,12 +6,12 @@ import android.os.Parcelable;
 public class QuestionParcel implements Parcelable {
 
     // member data
-    private int questionNumber;     // TODO ???
+    private int questionNumber;
     private String question;
     private int numberAnswers;
     private String[] answers;
-    // private int correctAnswer;   // TODO ???
-    private boolean[] usersAnswers; // TODO ???  Wie kommen die Antworten zurück ?!?!?!
+    private int[] correctAnswers;
+    private boolean[] usersAnswers;
 
     // static field used to regenerate object, individually or as array
     public static final Parcelable.Creator<QuestionParcel> CREATOR =
@@ -31,7 +31,8 @@ public class QuestionParcel implements Parcelable {
         this.setQuestion(pc.readString());
         this.setNumberAnswers(pc.readInt());
         pc.readStringArray(this.getAnswers());
-        // this.correctAnswer = pc.readInt();
+        // this.setCorrectAnswers(pc.readInt());
+        pc.readIntArray(this.getCorrectAnswers());
         pc.readBooleanArray(this.usersAnswers);
     }
 
@@ -40,14 +41,16 @@ public class QuestionParcel implements Parcelable {
         this.setQuestionNumber(0);
         this.setQuestion("");
         this.setNumberAnswers(0);
+        this.setAnswers(null);
+        this.setCorrectAnswers(new int[] { 0 });
     }
 
-    public QuestionParcel(int questionNumber, String question, int numberAnswers, String[] answers) {
-        this.setQuestionNumber(questionNumber);
-        this.setQuestion(question);
-        this.setNumberAnswers(numberAnswers);
-        this.setAnswers(answers);
-    }
+//    public QuestionParcel(int questionNumber, String question, int numberAnswers, String[] answers) {
+//        this.setQuestionNumber(questionNumber);
+//        this.setQuestion(question);
+//        this.setNumberAnswers(numberAnswers);
+//        this.setAnswers(answers);
+//    }
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
@@ -55,9 +58,9 @@ public class QuestionParcel implements Parcelable {
         parcel.writeString(this.getQuestion());
         parcel.writeInt(this.getNumberAnswers());
         parcel.writeStringArray(this.getAnswers());
-        // parcel.writeInt(this.correctAnswer);
+        // parcel.writeInt(this.getCorrectAnswers());
+        parcel.writeIntArray(this.getCorrectAnswers());
         parcel.writeBooleanArray(this.usersAnswers);
-
     }
 
     @Override
@@ -87,13 +90,32 @@ public class QuestionParcel implements Parcelable {
 
     public void setNumberAnswers(int numberAnswers) {
         this.numberAnswers = numberAnswers;
+
+        // allocate array of boolean values according to user's answers
+        this.usersAnswers = new boolean[this.numberAnswers];
     }
 
     public String[] getAnswers() {
-        return answers;
+        return this.answers;
     }
 
     public void setAnswers(String[] answers) {
         this.answers = answers;
+    }
+
+    public boolean getUsersAnswer(int index) {
+        return usersAnswers[index];
+    }
+
+    public void setUsersAnswer(int index, boolean value) {
+        this.usersAnswers[index] = value;
+    }
+
+    public int[] getCorrectAnswers() {
+        return this.correctAnswers;
+    }
+
+    public void setCorrectAnswers(int[] correctAnswers) {
+        this.correctAnswers = correctAnswers;
     }
 }

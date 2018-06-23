@@ -1,5 +1,14 @@
 package de.peterloos.knowledgeexam.activities;
 
+/*
+ * TODO Liste
+ *
+ * Es ist in der Answers View zwischen Radio Buttons und Checkboxes zu unterscheiden
+ * Das ist bei Radiobuttons nicht so einfach, da diese nicht in einer Group zusammengefasst werden können!
+
+
+ */
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
