@@ -10,7 +10,7 @@ public class QuestionParcel implements Parcelable {
     private String question;
     private int numberAnswers;
     private String[] answers;
-    private int correctAnswers;
+    private int[] correctAnswers;
     private boolean[] usersAnswers;
 
     // static field used to regenerate object, individually or as array
@@ -31,7 +31,8 @@ public class QuestionParcel implements Parcelable {
         this.setQuestion(pc.readString());
         this.setNumberAnswers(pc.readInt());
         pc.readStringArray(this.getAnswers());
-        this.setCorrectAnswers(pc.readInt());
+        // this.setCorrectAnswers(pc.readInt());
+        pc.readIntArray(this.getCorrectAnswers());
         pc.readBooleanArray(this.usersAnswers);
     }
 
@@ -41,7 +42,7 @@ public class QuestionParcel implements Parcelable {
         this.setQuestion("");
         this.setNumberAnswers(0);
         this.setAnswers(null);
-        this.setCorrectAnswers(0);
+        this.setCorrectAnswers(new int[] { 0 });
     }
 
 //    public QuestionParcel(int questionNumber, String question, int numberAnswers, String[] answers) {
@@ -57,7 +58,8 @@ public class QuestionParcel implements Parcelable {
         parcel.writeString(this.getQuestion());
         parcel.writeInt(this.getNumberAnswers());
         parcel.writeStringArray(this.getAnswers());
-        parcel.writeInt(this.getCorrectAnswers());
+        // parcel.writeInt(this.getCorrectAnswers());
+        parcel.writeIntArray(this.getCorrectAnswers());
         parcel.writeBooleanArray(this.usersAnswers);
     }
 
@@ -109,11 +111,11 @@ public class QuestionParcel implements Parcelable {
         this.usersAnswers[index] = value;
     }
 
-    public int getCorrectAnswers() {
+    public int[] getCorrectAnswers() {
         return this.correctAnswers;
     }
 
-    public void setCorrectAnswers(int correctAnswers) {
+    public void setCorrectAnswers(int[] correctAnswers) {
         this.correctAnswers = correctAnswers;
     }
 }

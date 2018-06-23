@@ -69,8 +69,8 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
             this.question.setQuestionNumber(0);
             this.question.setQuestion("INTERNAL ERROR");
             this.question.setNumberAnswers(1);
-            this.question.setAnswers(new String[] {"NO ANSWER"});
-            this.question.setCorrectAnswers(0);
+            this.question.setAnswers(new String[]{"NO ANSWER"});
+            this.question.setCorrectAnswers(new int[]{0});
 
             // TODO: Die nächste Zeile möglicherweise freischalten
             // this.question.setUsersAnswer(0, new boolean[] {false});
@@ -93,7 +93,13 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
             answers[i] = new Answer(tmp[i], question.getUsersAnswer(i));
         }
 
-        AnswersAdapter adapter = new AnswersAdapter(this.getActivity(), R.layout.answer_row, answers);
+        boolean useCheckBox = (this.question.getCorrectAnswers().length == 1) ? false : true;
+        AnswersAdapter adapter = new AnswersAdapter(
+                this.getActivity(),
+                R.layout.answer_row,
+                answers,
+                useCheckBox
+        );
         adapter.addOnAnswersListener(this);
         this.lvAnswers.setAdapter(adapter);
     }
@@ -106,7 +112,7 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
 
             Log.v(Globals.TAG, "FragmentQuestion:: answerSelected ===> Frage = " + question.getQuestionNumber() + ", Antwort zu " + position + ", checked = " + checked);
 
-            this.listener.answerOfQuestionSelected( question.getQuestionNumber(), position, checked);
+            this.listener.answerOfQuestionSelected(question.getQuestionNumber(), position, checked);
         }
     }
 
@@ -117,7 +123,7 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
         try {
             this.listener = (OnQuestionAndAnswersListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()  + " must implement OnQuestionAndAnswersListener");
+            throw new ClassCastException(context.toString() + " must implement OnQuestionAndAnswersListener");
         }
     }
 
