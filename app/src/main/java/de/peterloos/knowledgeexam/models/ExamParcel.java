@@ -5,13 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
-import java.util.Map;
 
 import de.peterloos.knowledgeexam.Globals;
 
@@ -27,24 +21,8 @@ public class ExamParcel implements Parcelable {
         this.pin = pc.readString();
         this.description = pc.readString();
         this.numQuestions = pc.readInt();
-
-//        this.questionKeys = new String[this.numQuestions];
-//        pc.readStringArray(this.questionKeys);
-
         this.questionKeys = pc.createStringArray();
-
-
-//        pc.readStringArray(this.answers);
-//        this.correctAnswer = pc.readInt();
-//        pc.readBooleanArray(this.usersAnswers);
     }
-
-//    public ExamParcel(String pin, String description, int numQuestions) {
-//
-//        this.pin = pin;
-//        this.description = description;
-//        this.numQuestions = numQuestions;
-//    }
 
     // user-defined c'tor
     public ExamParcel(Exam exam) {
@@ -60,7 +38,7 @@ public class ExamParcel implements Parcelable {
             k++;
         }
 
-        Log.v(Globals.TAG, " Size des Arrays ist gleiche " + this.questionKeys.length);
+        Log.v(Globals.TAG, " Size des Arrays ist gleich " + this.questionKeys.length);
     }
 
     /**

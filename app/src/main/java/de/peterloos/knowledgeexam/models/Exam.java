@@ -18,8 +18,13 @@ public class Exam {
 
     @Override
     public String toString() {
-        return this.pin;
+        return this.print();
     }
+
+//    @Override
+//    public String toString() {
+//        return this.pin;
+//    }
 
     @SuppressWarnings("unused")
     public String getDescription() {

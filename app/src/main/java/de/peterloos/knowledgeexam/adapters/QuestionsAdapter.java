@@ -1,10 +1,15 @@
 package de.peterloos.knowledgeexam.adapters;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.fragments.QuestionFragment;
@@ -12,12 +17,42 @@ import de.peterloos.knowledgeexam.models.QuestionParcel;
 
 public class QuestionsAdapter extends FragmentPagerAdapter {
 
-    private final int MaxQuestions = 10;
     private QuestionParcel[] parcels;
+    private  Context context;
 
-    public QuestionsAdapter(FragmentManager fm) {
+    public QuestionsAdapter(FragmentManager fm, Context context) {
         super(fm);
-        this.setupQuestions();
+
+        this.parcels = new QuestionParcel[0];
+
+        this.context = context;
+
+
+        // this.setupQuestions();
+
+        // WILL TESTEN, WENN DIE DATEN SPÄTER EINTREFFEN !!!!
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Log.v(Globals.TAG, "JETZT kommt setupQuestions");
+
+                setupQuestions();
+
+                // crashes - no UI thread
+                // notifyDataSetChanged();
+
+                // need to switch to UI thread !!!
+                Handler h=new Handler(QuestionsAdapter.this.context.getMainLooper());
+                h.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyDataSetChanged();
+                    }
+                });
+
+            }
+        }, 2000);
     }
 
     @Override
@@ -28,10 +63,13 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
         Fragment fragment = QuestionFragment.newInstance();
 
         // setup data for corresponding fragment
-        QuestionParcel parcel = this.parcels[position];
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Globals.QUESTION_PARCEL, parcel);
-        fragment.setArguments(bundle);
+        if (position < this.parcels.length) {
+
+            QuestionParcel parcel = this.parcels[position];
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Globals.QUESTION_PARCEL, parcel);
+            fragment.setArguments(bundle);
+        }
 
         return fragment;
     }
@@ -52,7 +90,7 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
     // private helper methods
     private void setupQuestions() {
 
-        this.parcels = new QuestionParcel[MaxQuestions];
+        this.parcels = new QuestionParcel[10];
 
         QuestionParcel dsc1 = new QuestionParcel();
         dsc1.setQuestionNumber(0);

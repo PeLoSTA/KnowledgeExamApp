@@ -22,7 +22,8 @@ public class TakeExamActivity extends AppCompatActivity implements OnQuestionAnd
      * may be best to switch to a android.support.v4.app.FragmentStatePagerAdapter
      */
     private ViewPager viewPager;
-    private QuestionsAdapter pagerAdapter;
+    private QuestionsAdapter questionsAdapter;
+    private ExamParcel parcel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +34,16 @@ public class TakeExamActivity extends AppCompatActivity implements OnQuestionAnd
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
 
-            ExamParcel parcel = this.getIntent().getParcelableExtra(Globals.EXAM_PARCEL);
+            this.parcel = this.getIntent().getParcelableExtra(Globals.EXAM_PARCEL);
             Log.v(Globals.TAG, parcel.toString());
         }
 
         // create the adapter that will return a fragment for each question
-        this.pagerAdapter = new QuestionsAdapter(this.getSupportFragmentManager());
+        this.questionsAdapter = new QuestionsAdapter(this.getSupportFragmentManager(), this.getApplicationContext());
 
         // setup the ViewPager with the question adapter
         this.viewPager = this.findViewById(R.id.container);
-        this.viewPager.setAdapter(this.pagerAdapter);
+        this.viewPager.setAdapter(this.questionsAdapter);
     }
 
     // implementation of interface 'OnQuestionAndAnswersListener'
@@ -54,6 +55,6 @@ public class TakeExamActivity extends AppCompatActivity implements OnQuestionAnd
                 "Question No. " + questionNumber + ", Answer No. " + answerPosition + ": Checked = " + checked,
                 Toast.LENGTH_LONG).show();
 
-        pagerAdapter.updateAnswer(questionNumber, answerPosition, checked);
+        this.questionsAdapter.updateAnswer(questionNumber, answerPosition, checked);
     }
 }

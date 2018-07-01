@@ -30,9 +30,6 @@ public class ChooseExamActivity extends AppCompatActivity
 
     // miscellaneous
     private ExamsAdapter adapter;
-
-    private String pin;
-    // ODER
     private Exam exam;
 
     @Override
@@ -65,7 +62,7 @@ public class ChooseExamActivity extends AppCompatActivity
         AlertDialog alertDialog = new AlertDialog.Builder(ChooseExamActivity.this).create();
         alertDialog.setTitle("Start Exam"); //set title
         String msg = String.format(Locale.getDefault(),
-                "Do you want to start the selected exam with pin %s", this.pin);
+                "Do you want to start the selected exam with pin %s", this.exam.getPin());
         alertDialog.setMessage(msg); //set Message
         alertDialog.setIcon(R.drawable.ic_launcher_background); //set icon/image
         // TODO: Wie sieht dieses Icon aus ???
@@ -75,21 +72,15 @@ public class ChooseExamActivity extends AppCompatActivity
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 Intent intent = new Intent(getApplicationContext(), TakeExamActivity.class);
-                // intent.putExtra(Globals.EXTRA_PIN_EXAM, pin);
-
-                // ExamParcel parcel = new ExamParcel("123", "asdasdsad", 10);
-
                 ExamParcel parcel = new ExamParcel(ChooseExamActivity.this.exam);
-
                 intent.putExtra(Globals.EXAM_PARCEL, parcel);
-
                 ChooseExamActivity.this.startActivity(intent);
             }
         });
+
         alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
             }
         });
 
@@ -99,11 +90,7 @@ public class ChooseExamActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-//        this.pin = this.adapter.getItem(i);
-//        this.etSelectedExam.setText(this.pin);
-
         this.exam = this.adapter.getItem(i);
         this.etSelectedExam.setText(this.exam.getPin());
-
     }
 }
