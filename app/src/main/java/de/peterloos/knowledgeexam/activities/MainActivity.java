@@ -22,7 +22,8 @@ import android.widget.Button;
 
 // https://sdgsystems.com/blog/android-viewpager-fragments-tutorial-and-sample-project
 
-
+// creating Fragments:
+// https://stackoverflow.com/questions/9245408/best-practice-for-instantiating-a-new-android-fragment
 
 import de.peterloos.knowledgeexam.R;
 

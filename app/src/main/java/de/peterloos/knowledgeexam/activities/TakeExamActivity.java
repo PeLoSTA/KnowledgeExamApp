@@ -1,5 +1,6 @@
 package de.peterloos.knowledgeexam.activities;
 
+import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,6 +45,8 @@ public class TakeExamActivity extends AppCompatActivity implements OnQuestionAnd
         // setup the ViewPager with the question adapter
         this.viewPager = this.findViewById(R.id.container);
         this.viewPager.setAdapter(this.questionsAdapter);
+
+        getWindow().getDecorView().setBackgroundColor(Color.GREEN);
     }
 
     // implementation of interface 'OnQuestionAndAnswersListener'
