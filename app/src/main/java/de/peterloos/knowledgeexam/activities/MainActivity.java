@@ -16,6 +16,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
+// LINK FOR IMPORTANT SAMPLES
+
+// http://www.zoftino.com/android-viewpager-with-custom-pager-adapter
+
+// https://sdgsystems.com/blog/android-viewpager-fragments-tutorial-and-sample-project
+
+// creating Fragments:
+// https://stackoverflow.com/questions/9245408/best-practice-for-instantiating-a-new-android-fragment
+
 import de.peterloos.knowledgeexam.R;
 
 public class MainActivity extends AppCompatActivity {

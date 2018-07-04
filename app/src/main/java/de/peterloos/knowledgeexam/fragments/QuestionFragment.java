@@ -1,6 +1,7 @@
 package de.peterloos.knowledgeexam.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -51,6 +52,8 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        view.setBackgroundColor(Color.RED);
+
         this.tvQuestionHeader = view.findViewById(R.id.textviewQuestionHeader);
         this.tvQuestion = view.findViewById(R.id.textviewQuestion);
         this.lvAnswers = view.findViewById(R.id.listviewAnswers);
@@ -80,7 +83,7 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
 
         // setup UI
         int number = question.getQuestionNumber();
-        String header = String.format(Locale.getDefault(), "Frage %d:", number + 1);
+        String header = String.format(Locale.getDefault(), "Frage %d:", number);
         this.tvQuestionHeader.setText(header);
         this.tvQuestion.setText(question.getQuestion());
 
