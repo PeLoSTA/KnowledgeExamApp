@@ -16,8 +16,7 @@ public class QuestionParcel implements Parcelable {
     private String question;
     private int numberAnswers;
     private String[] answers;
-    // TODO: Das eine ist BOOL , das andere ist INTEGER .... EINHEITLICH Machen !!!
-    private int[] results;
+    private boolean[] results;
     private boolean[] userResults;
 
     // static field used to regenerate object, individually or as array
@@ -38,7 +37,7 @@ public class QuestionParcel implements Parcelable {
         this.setQuestion(pc.readString());
         this.setNumberAnswers(pc.readInt());
         pc.readStringArray(this.getAnswers());
-        pc.readIntArray(this.getResults());
+        pc.readBooleanArray(this.getResults());
         pc.readBooleanArray(this.getUserResults());
     }
 
@@ -62,14 +61,14 @@ public class QuestionParcel implements Parcelable {
         this.setAnswers(answers);
 
         // traverse hash map of correct answers
-        int[] correctAnswers = new int[numAnswers];
+        boolean[] results = new boolean[numAnswers];
         Map<String, Boolean> correctAnswersMap = questionModel.getResults();
         for (int i = 0; i < numAnswers; i++) {
             String key = "answer" + (i + 1);
             Boolean value = correctAnswersMap.get(key);
-            correctAnswers[i] = value ? 1 : 0;
+            results[i] = value;
         }
-        this.setResults(correctAnswers);
+        this.setResults(results);
 
         // provide (yet) empty array of users answers
         boolean[] usersAnswers = new boolean[numAnswers];
@@ -82,7 +81,7 @@ public class QuestionParcel implements Parcelable {
         parcel.writeString(this.getQuestion());
         parcel.writeInt(this.getNumberAnswers());
         parcel.writeStringArray(this.getAnswers());
-        parcel.writeIntArray(this.getResults());
+        parcel.writeBooleanArray(this.getResults());
         parcel.writeBooleanArray(this.getUserResults());
     }
 
@@ -123,11 +122,11 @@ public class QuestionParcel implements Parcelable {
         this.answers = answers;
     }
 
-    public int[] getResults() {
+    public boolean[] getResults() {
         return this.results;
     }
 
-    public void setResults(int[] results) {
+    public void setResults(boolean[] results) {
         this.results = results;
     }
 
@@ -173,7 +172,7 @@ public class QuestionParcel implements Parcelable {
         for (int i = 0; i < this.results.length; i++) {
             sb.append(String.format(
                     Locale.getDefault(),
-                    "  Result %d: %d", (i + 1), this.results[i]));
+                    "  Result %d: %b", (i + 1), this.results[i]));
             sb.append(System.getProperty("line.separator"));
         }
 

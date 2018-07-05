@@ -5,6 +5,7 @@ import com.google.firebase.database.PropertyName;
 import java.util.Locale;
 import java.util.Map;
 
+@SuppressWarnings("WeakerAccess")
 public class QuestionModel {
 
     private String question;

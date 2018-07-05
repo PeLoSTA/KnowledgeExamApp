@@ -1,6 +1,5 @@
 package de.peterloos.knowledgeexam.activities;
 
-import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,8 +46,6 @@ public class TakeExamActivity extends AppCompatActivity implements OnQuestionAnd
         // setup the ViewPager with the question adapter
         this.viewPager = this.findViewById(R.id.container);
         this.viewPager.setAdapter(this.questionsAdapter);
-
-        this.getWindow().getDecorView().setBackgroundColor(Color.GREEN);
     }
 
     // implementation of interface 'OnQuestionAndAnswersListener'
@@ -57,7 +54,7 @@ public class TakeExamActivity extends AppCompatActivity implements OnQuestionAnd
 
         Toast.makeText(
                 this.getBaseContext(),
-                "QuestionModel No. " + questionNumber + ", Answer No. " + answerPosition + ": Checked = " + checked,
+                "Question No. " + questionNumber + ", Answer No. " + answerPosition + ": Checked = " + checked,
                 Toast.LENGTH_LONG).show();
 
         this.questionsAdapter.updateAnswer(questionNumber, answerPosition, checked);

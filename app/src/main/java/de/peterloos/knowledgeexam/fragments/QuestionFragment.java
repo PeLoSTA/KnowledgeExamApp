@@ -1,7 +1,6 @@
 package de.peterloos.knowledgeexam.fragments;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -50,14 +49,6 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.setBackgroundColor(Color.RED);
-
-        this.tvQuestionHeader = view.findViewById(R.id.textviewQuestionHeader);
-        this.tvQuestion = view.findViewById(R.id.textviewQuestion);
-        this.lvAnswers = view.findViewById(R.id.listviewAnswers);
-
-        // =============================================================================
-
         // extract this fragment's question from bundle
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -67,12 +58,14 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
             Log.v(Globals.TAG, question.toString());
         }
         else {
-            Log.v(Globals.TAG, "OKI DOKI --- NO BUNDLE #############################");
+            Log.e(Globals.TAG, "NO Bundle found !!!");
         }
 
-        // =============================================================================
-
         // setup UI
+        this.tvQuestionHeader = view.findViewById(R.id.textviewQuestionHeader);
+        this.tvQuestion = view.findViewById(R.id.textviewQuestion);
+        this.lvAnswers = view.findViewById(R.id.listviewAnswers);
+
         int number = question.getQuestionNumber();
         String header = String.format(Locale.getDefault(), "Frage %d:", (number+1));
         this.tvQuestionHeader.setText(header);
@@ -88,7 +81,7 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
             answers[i] = new Answer(answerTexts[i], userAnswers[i]);
         }
 
-        boolean useCheckBox = (this.question.getResults().length == 1) ? false : true;
+        boolean useCheckBox = this.question.getResults().length != 1;
         AnswersAdapter adapter = new AnswersAdapter(
                 this.getActivity(),
                 R.layout.answer_row,
@@ -104,8 +97,6 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
     public void answerSelected(int position, boolean checked) {
 
         if (this.listener != null) {
-
-            Log.v(Globals.TAG, "FragmentQuestion:: answerSelected ===> Frage = " + question.getQuestionNumber() + ", Antwort zu " + position + ", checked = " + checked);
             this.listener.answerOfQuestionSelected(question.getQuestionNumber(), position, checked);
         }
     }
