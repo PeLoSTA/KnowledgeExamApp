@@ -5,16 +5,14 @@ package de.peterloos.knowledgeexam.activities;
  *
  * Es ist in der Answers View zwischen Radio Buttons und Checkboxes zu unterscheiden
  * Das ist bei Radiobuttons nicht so einfach, da diese nicht in einer Group zusammengefasst werden können!
-
-
  */
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.Button;
+
+/*Some hints:
+ *
+ * Best practives for fragments:
+ * SO: https://stackoverflow.com/questions/9245408/best-practice-for-instantiating-a-new-android-fragment
+ */
 
 // LINK FOR IMPORTANT SAMPLES
 
@@ -24,6 +22,15 @@ import android.widget.Button;
 
 // creating Fragments:
 // https://stackoverflow.com/questions/9245408/best-practice-for-instantiating-a-new-android-fragment
+
+
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
 
 import de.peterloos.knowledgeexam.R;
 
@@ -46,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent demoIntent = new Intent(getApplicationContext(), ChooseExamActivity.class);
-                startActivity(demoIntent);
+                MainActivity.this.startActivity(demoIntent);
             }
         });
     }

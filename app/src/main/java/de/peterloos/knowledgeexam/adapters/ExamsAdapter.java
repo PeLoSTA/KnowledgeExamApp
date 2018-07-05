@@ -16,9 +16,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import de.peterloos.knowledgeexam.Globals;
-import de.peterloos.knowledgeexam.models.Exam;
+import de.peterloos.knowledgeexam.models.ExamModel;
 
-public class ExamsAdapter extends ArrayAdapter<Exam> {
+public class ExamsAdapter extends ArrayAdapter<ExamModel> {
 
     private Context context;
     private FirebaseDatabase database;
@@ -38,8 +38,8 @@ public class ExamsAdapter extends ArrayAdapter<Exam> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
         TextView tv = rowView.findViewById(android.R.id.text1);  // predefined id (!)
-        Exam exam = this.getItem(pos);
-        tv.setText(exam.getPin());
+        ExamModel examModel = this.getItem(pos);
+        tv.setText(examModel.getPin());
         return rowView;
     }
 
@@ -47,22 +47,22 @@ public class ExamsAdapter extends ArrayAdapter<Exam> {
 
         this.ref.child("exams").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for (DataSnapshot child : snapshot.getChildren()) {
 
                     String key = child.getKey();
                     Log.v(Globals.TAG, "Found key ==> " + key);
 
-                    Exam exam = child.getValue(Exam.class);
+                    ExamModel examModel = child.getValue(ExamModel.class);
 
-                    // add pin of exam to listview
-                    ExamsAdapter.this.add(exam);
+                    // add pin of examModel to listview
+                    ExamsAdapter.this.add(examModel);
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError err) {
+            public void onCancelled(@NonNull DatabaseError err) {
                 Log.w(Globals.TAG, "ExamsAdapter:onCancelled", err.toException());
             }
         });

@@ -20,7 +20,7 @@ import de.peterloos.knowledgeexam.adapters.AnswersAdapter;
 import de.peterloos.knowledgeexam.interfaces.OnAnswersListener;
 import de.peterloos.knowledgeexam.interfaces.OnQuestionAndAnswersListener;
 import de.peterloos.knowledgeexam.models.Answer;
-import de.peterloos.knowledgeexam.models.QuestionParcel;
+import de.peterloos.knowledgeexam.parcels.QuestionParcel;
 
 public class QuestionFragment extends Fragment implements OnAnswersListener {
 
@@ -29,7 +29,6 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
     private ListView lvAnswers;
 
     // data of this question
-    // TODO: DAS IST ZU KLÄREN, OB EINE PARCEL KLASSE HIER GEEIGNET IST ....
     private QuestionParcel question;
 
     private OnQuestionAndAnswersListener listener;
@@ -44,7 +43,6 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_question, container, false);
     }
 
@@ -62,41 +60,35 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
 
         // extract this fragment's question from bundle
         Bundle bundle = this.getArguments();
-
         if (bundle != null) {
-            this.question = bundle.getParcelable(Globals.QUESTION_PARCEL);
-
-            Log.v(Globals.TAG, "FragmentQuestion ==> Frage " + question.getQuestion());
-        } else {
-            this.question = new QuestionParcel();
-            this.question.setQuestionNumber(0);
-            this.question.setQuestion("INTERNAL ERROR");
-            this.question.setNumberAnswers(1);
-            this.question.setAnswers(new String[]{"NO ANSWER"});
-            this.question.setCorrectAnswers(new int[]{0});
-
-            // TODO: Die nächste Zeile möglicherweise freischalten
-            // this.question.setUsersAnswer(0, new boolean[] {false});
+            question = bundle.getParcelable(Globals.QUESTION_PARCEL);
+            Log.v(Globals.TAG, "FragmentQuestion::onViewCreated");
+            Log.v(Globals.TAG, "  --> current question:");
+            Log.v(Globals.TAG, question.toString());
+        }
+        else {
+            Log.v(Globals.TAG, "OKI DOKI --- NO BUNDLE #############################");
         }
 
         // =============================================================================
 
         // setup UI
         int number = question.getQuestionNumber();
-        String header = String.format(Locale.getDefault(), "Frage %d:", number);
+        String header = String.format(Locale.getDefault(), "Frage %d:", (number+1));
         this.tvQuestionHeader.setText(header);
         this.tvQuestion.setText(question.getQuestion());
 
         // setup adapter for ListView with answers and
         // the latest user input according to these answers
         Answer[] answers = new Answer[question.getNumberAnswers()];
-        String[] tmp = question.getAnswers();
+        String[] answerTexts = question.getAnswers();
+        boolean[] userAnswers = question.getUserResults();
 
         for (int i = 0; i < question.getNumberAnswers(); i++) {
-            answers[i] = new Answer(tmp[i], question.getUsersAnswer(i));
+            answers[i] = new Answer(answerTexts[i], userAnswers[i]);
         }
 
-        boolean useCheckBox = (this.question.getCorrectAnswers().length == 1) ? false : true;
+        boolean useCheckBox = (this.question.getResults().length == 1) ? false : true;
         AnswersAdapter adapter = new AnswersAdapter(
                 this.getActivity(),
                 R.layout.answer_row,
@@ -114,7 +106,6 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
         if (this.listener != null) {
 
             Log.v(Globals.TAG, "FragmentQuestion:: answerSelected ===> Frage = " + question.getQuestionNumber() + ", Antwort zu " + position + ", checked = " + checked);
-
             this.listener.answerOfQuestionSelected(question.getQuestionNumber(), position, checked);
         }
     }

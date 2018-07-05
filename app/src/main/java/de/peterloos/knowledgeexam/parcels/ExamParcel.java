@@ -1,20 +1,34 @@
-package de.peterloos.knowledgeexam.models;
+package de.peterloos.knowledgeexam.parcels;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.Locale;
 
 import de.peterloos.knowledgeexam.Globals;
+import de.peterloos.knowledgeexam.models.ExamModel;
 
+@SuppressWarnings("WeakerAccess")
 public class ExamParcel implements Parcelable {
 
     private String pin;
     private String description;
     private String[] questionKeys;
     private int numQuestions;
+
+    // static field used to regenerate object, individually or as array
+    public static final Parcelable.Creator<ExamParcel> CREATOR =
+        new Parcelable.Creator<ExamParcel>() {
+            public ExamParcel createFromParcel(Parcel pc) {
+                return new ExamParcel(pc);
+            }
+
+            public ExamParcel[] newArray(int size) {
+
+                return new ExamParcel[size];
+            }
+        };
 
     // system-defined c'tor from Parcel, reads back fields IN THE ORDER they were written
     public ExamParcel(Parcel pc) {
@@ -25,36 +39,19 @@ public class ExamParcel implements Parcelable {
     }
 
     // user-defined c'tor
-    public ExamParcel(Exam exam) {
+    public ExamParcel(ExamModel examModel) {
 
-        this.pin = exam.getPin();
-        this.description = exam.getDescription();
-        this.numQuestions = exam.getNumQuestions();
+        this.pin = examModel.getPin();
+        this.description = examModel.getDescription();
+        this.numQuestions = examModel.getNumQuestions();
 
-        this.questionKeys = new String[exam.getQuestions().size()];
+        this.questionKeys = new String[examModel.getQuestions().size()];
         int k = 0;
-        for (String key : exam.getQuestions().values()) {
+        for (String key : examModel.getQuestions().values()) {
             this.questionKeys[k] = key;
             k++;
         }
-
-        Log.v(Globals.TAG, " Size des Arrays ist gleich " + this.questionKeys.length);
     }
-
-    /**
-     * static field used to regenerate object, individually or as array
-     */
-    public static final Parcelable.Creator<ExamParcel> CREATOR =
-            new Parcelable.Creator<ExamParcel>() {
-                public ExamParcel createFromParcel(Parcel pc) {
-                    return new ExamParcel(pc);
-                }
-
-                public ExamParcel[] newArray(int size) {
-
-                    return new ExamParcel[size];
-                }
-            };
 
     @Override
     public int describeContents() {
@@ -82,7 +79,7 @@ public class ExamParcel implements Parcelable {
         sb.append(System.getProperty("line.separator"));
 
         for (int i = 0; i < this.questionKeys.length; i++) {
-            sb.append(String.format("    Question-Key: %s", this.questionKeys[i]));
+            sb.append(String.format("    QuestionModel-Key: %s", this.questionKeys[i]));
             sb.append(System.getProperty("line.separator"));
         }
 

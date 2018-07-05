@@ -11,7 +11,7 @@ import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.R;
 import de.peterloos.knowledgeexam.adapters.QuestionsAdapter;
 import de.peterloos.knowledgeexam.interfaces.OnQuestionAndAnswersListener;
-import de.peterloos.knowledgeexam.models.ExamParcel;
+import de.peterloos.knowledgeexam.parcels.ExamParcel;
 
 public class TakeExamActivity extends AppCompatActivity implements OnQuestionAndAnswersListener {
 
@@ -40,13 +40,15 @@ public class TakeExamActivity extends AppCompatActivity implements OnQuestionAnd
         }
 
         // create the adapter that will return a fragment for each question
-        this.questionsAdapter = new QuestionsAdapter(this.getSupportFragmentManager(), this.getApplicationContext());
+        this.questionsAdapter = new QuestionsAdapter(
+                this.getSupportFragmentManager(),
+                this.getApplicationContext());
 
         // setup the ViewPager with the question adapter
         this.viewPager = this.findViewById(R.id.container);
         this.viewPager.setAdapter(this.questionsAdapter);
 
-        getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+        this.getWindow().getDecorView().setBackgroundColor(Color.GREEN);
     }
 
     // implementation of interface 'OnQuestionAndAnswersListener'
@@ -55,7 +57,7 @@ public class TakeExamActivity extends AppCompatActivity implements OnQuestionAnd
 
         Toast.makeText(
                 this.getBaseContext(),
-                "Question No. " + questionNumber + ", Answer No. " + answerPosition + ": Checked = " + checked,
+                "QuestionModel No. " + questionNumber + ", Answer No. " + answerPosition + ": Checked = " + checked,
                 Toast.LENGTH_LONG).show();
 
         this.questionsAdapter.updateAnswer(questionNumber, answerPosition, checked);

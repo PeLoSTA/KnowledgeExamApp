@@ -5,38 +5,17 @@ import com.google.firebase.database.PropertyName;
 import java.util.Locale;
 import java.util.Map;
 
-public class Question {
+public class QuestionModel {
 
     private String question;
     private int numAnswers;
     private int numCorrectAnswers;
     private String courseKey;
     private Map<String, String> answers;
-    private Map<String, Boolean> correctAnswers;
+    private Map<String, Boolean> results;
 
     // mandatory: default constructor that takes no arguments
-    public Question() {
-    }
-
-    @SuppressWarnings("unused")
-    public String print() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Course-Key: %s", this.getCourseKey()));
-        sb.append(System.getProperty("line.separator"));
-        sb.append(String.format(Locale.getDefault(), "Number of Answers: %d", this.getNumAnswers()));
-        sb.append(" - ");
-        sb.append(String.format(Locale.getDefault(), "Number of correct Answers: %d", this.getNumCorrectAnswers()));
-        sb.append(System.getProperty("line.separator"));
-        sb.append(String.format("Text of Question: %s", this.getQuestion()));
-        sb.append(System.getProperty("line.separator"));
-
-        // traversal runs unordered --- TODO !!!!!!!!!!!!!
-        for (String value : this.answers.values()) {
-            sb.append(String.format("    Answer: %s", value));
-            sb.append(System.getProperty("line.separator"));
-        }
-
-        return sb.toString();
+    public QuestionModel() {
     }
 
     @SuppressWarnings("unused")
@@ -97,18 +76,48 @@ public class Question {
 
     @SuppressWarnings("unused")
     @PropertyName("correct-answers")
-    public Map<String, Boolean> getCorrectAnswers() {
-        return correctAnswers;
+    public Map<String, Boolean> getResults() {
+        return this.results;
     }
 
     @SuppressWarnings("unused")
     @PropertyName("correct-answers")
-    public void setCorrectAnswers(Map<String, Boolean> correctAnswers) {
-        this.correctAnswers = correctAnswers;
+    public void setResults(Map<String, Boolean> results) {
+        this.results = results;
     }
 
     @Override
     public String toString() {
         return this.print();
+    }
+
+    @SuppressWarnings("unused")
+    private String print() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Course-Key: %s", this.getCourseKey()));
+        sb.append(System.getProperty("line.separator"));
+        sb.append(String.format(Locale.getDefault(), "Number of Answers: %d", this.getNumAnswers()));
+        sb.append(" - ");
+        sb.append(String.format(Locale.getDefault(), "Number of correct Answers: %d", this.getNumCorrectAnswers()));
+        sb.append(System.getProperty("line.separator"));
+        sb.append(String.format("Text of QuestionModel: %s", this.getQuestion()));
+        sb.append(System.getProperty("line.separator"));
+
+        // traverse answers
+        for (int i = 0; i < this.answers.size(); i++) {
+            String key = "answer" + (i + 1);
+            String value = this.answers.get(key);
+            sb.append(String.format(Locale.getDefault(), "    Answer %d: %s", (i + 1), value));
+            sb.append(System.getProperty("line.separator"));
+        }
+
+        for (int i = 0; i < this.results.size(); i++) {
+            String key = "answer" + (i + 1);
+            Boolean value = this.results.get(key);
+            sb.append(String.format(Locale.getDefault(), "    Result %d: %s", (i + 1), value));
+            sb.append(System.getProperty("line.separator"));
+        }
+
+        return sb.toString();
     }
 }
