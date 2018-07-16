@@ -8,15 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.R;
+import de.peterloos.knowledgeexam.adapters.QuestionsSummaryAdapter;
+import de.peterloos.knowledgeexam.models.QuestionSummaryModel;
 import de.peterloos.knowledgeexam.parcels.QuestionParcel;
 
 public class QuestionsSummaryFragment extends Fragment {
 
+    private ListView lvSummary;
     private Button btnSend;
 
     // no-args c'tor required
@@ -40,17 +45,38 @@ public class QuestionsSummaryFragment extends Fragment {
 
             Log.v(Globals.TAG, "QuestionsSummaryFragment::onViewCreated");
             Log.v(Globals.TAG, "  --> all questions:  " + summary.size());
-        }
-        else {
+
+//            for (int i = 0; i < summary.size(); i++) {
+//
+//                QuestionParcel parcel = summary.get(i);
+//                Log.v(Globals.TAG, parcel.toString());
+//                Log.v(Globals.TAG, "-------------------------------------------------------");
+//            }
+        } else {
             Log.e(Globals.TAG, "NO Bundle found !!!");
         }
+
+        // setup UI
+        this.lvSummary = view.findViewById(R.id.listviewSummary);
+        List<QuestionSummaryModel> values = new ArrayList<>();
+
+        // just for testing
+        for (int i = 0; i < 25; i++) {
+
+            QuestionSummaryModel value = new QuestionSummaryModel();
+            value.setQuestionNumber(i+1);
+            values.add(value);
+        }
+
+        QuestionsSummaryAdapter adapter = new QuestionsSummaryAdapter(this.getContext(), values);
+        this.lvSummary.setAdapter(adapter);
 
         // setup UI
         this.btnSend = view.findViewById(R.id.buttonSend);
         this.btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v(Globals.TAG ,"arghhh");
+                Log.v(Globals.TAG, "arghhh");
             }
         });
     }

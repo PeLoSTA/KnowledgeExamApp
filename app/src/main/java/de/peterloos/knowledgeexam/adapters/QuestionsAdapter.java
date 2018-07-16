@@ -83,7 +83,6 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
         if (this.data.size() == 0) {
 
             fragment = new Fragment();
-
         }
         else if ((this.data.size() > 0) && (pos < this.data.size())) {
 
