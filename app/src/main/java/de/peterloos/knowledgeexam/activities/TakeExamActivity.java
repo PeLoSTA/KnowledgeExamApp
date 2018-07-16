@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.R;
 import de.peterloos.knowledgeexam.adapters.QuestionsAdapter;
@@ -52,10 +54,15 @@ public class TakeExamActivity extends AppCompatActivity implements OnQuestionAnd
     @Override
     public void answerOfQuestionSelected(int questionNumber, int answerPosition, boolean checked) {
 
-        Toast.makeText(
-                this.getBaseContext(),
-                "Question No. " + questionNumber + ", Answer No. " + answerPosition + ": Checked = " + checked,
-                Toast.LENGTH_LONG).show();
+        if (checked) {
+            String text = String.format(
+                Locale.getDefault(),
+                "Selected Answer No. %d - Question No. %d",
+                questionNumber,
+                answerPosition);
+
+            Toast.makeText(this.getBaseContext(), text, Toast.LENGTH_SHORT).show();
+        }
 
         this.questionsAdapter.updateAnswer(questionNumber, answerPosition, checked);
     }

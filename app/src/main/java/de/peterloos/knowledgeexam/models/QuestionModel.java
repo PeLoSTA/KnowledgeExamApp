@@ -108,7 +108,7 @@ public class QuestionModel {
         for (int i = 0; i < this.answers.size(); i++) {
             String key = "answer" + (i + 1);
             String value = this.answers.get(key);
-            sb.append(String.format(Locale.getDefault(), "    Answer %d: %s", (i + 1), value));
+            sb.append(String.format(Locale.getDefault(), "    AnswerModel %d: %s", (i + 1), value));
             sb.append(System.getProperty("line.separator"));
         }
 

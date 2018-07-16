@@ -18,7 +18,7 @@ import de.peterloos.knowledgeexam.R;
 import de.peterloos.knowledgeexam.adapters.AnswersAdapter;
 import de.peterloos.knowledgeexam.interfaces.OnAnswersListener;
 import de.peterloos.knowledgeexam.interfaces.OnQuestionAndAnswersListener;
-import de.peterloos.knowledgeexam.models.Answer;
+import de.peterloos.knowledgeexam.models.AnswerModel;
 import de.peterloos.knowledgeexam.parcels.QuestionParcel;
 
 public class QuestionFragment extends Fragment implements OnAnswersListener {
@@ -65,27 +65,26 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
         this.tvQuestionHeader = view.findViewById(R.id.textviewQuestionHeader);
         this.tvQuestion = view.findViewById(R.id.textviewQuestion);
         this.lvAnswers = view.findViewById(R.id.listviewAnswers);
-
         int number = question.getQuestionNumber();
         String header = String.format(Locale.getDefault(), "Frage %d:", (number+1));
         this.tvQuestionHeader.setText(header);
         this.tvQuestion.setText(question.getQuestion());
 
-        // setup adapter for ListView with answers and
-        // the latest user input according to these answers
-        Answer[] answers = new Answer[question.getNumberAnswers()];
+        // setup adapter for ListView with answerModels and
+        // the latest user input according to these answerModels
+        AnswerModel[] answerModels = new AnswerModel[question.getNumberAnswers()];
         String[] answerTexts = question.getAnswers();
         boolean[] userAnswers = question.getUserResults();
 
         for (int i = 0; i < question.getNumberAnswers(); i++) {
-            answers[i] = new Answer(answerTexts[i], userAnswers[i]);
+            answerModels[i] = new AnswerModel(answerTexts[i], userAnswers[i]);
         }
 
         boolean useCheckBox = this.question.getResults().length != 1;
         AnswersAdapter adapter = new AnswersAdapter(
                 this.getActivity(),
                 R.layout.answer_row,
-                answers,
+                answerModels,
                 useCheckBox
         );
         adapter.addOnAnswersListener(this);

@@ -164,7 +164,7 @@ public class QuestionParcel implements Parcelable {
         for (int i = 0; i < this.answers.length; i++) {
             sb.append(String.format(
                     Locale.getDefault(),
-                    "  Answer %d: %s", (i + 1), this.answers[i]));
+                    "  AnswerModel %d: %s", (i + 1), this.answers[i]));
             sb.append(System.getProperty("line.separator"));
         }
 

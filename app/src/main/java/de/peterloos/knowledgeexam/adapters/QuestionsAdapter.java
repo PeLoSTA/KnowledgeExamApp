@@ -19,6 +19,7 @@ import java.util.List;
 
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.fragments.QuestionFragment;
+import de.peterloos.knowledgeexam.fragments.QuestionsSummaryFragment;
 import de.peterloos.knowledgeexam.models.QuestionModel;
 import de.peterloos.knowledgeexam.parcels.QuestionParcel;
 
@@ -26,7 +27,7 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
 
     private FirebaseDatabase database;
     private DatabaseReference ref;
-    private List<QuestionParcel> data;
+    private ArrayList<QuestionParcel> data;
     private Context context;
 
     public QuestionsAdapter(FragmentManager fm, Context context) {
@@ -68,7 +69,8 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return this.data.size();
+
+        return (this.data.size() == 0) ? 0 : (1 + this.data.size());
     }
 
     @Override
@@ -77,7 +79,13 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
         Log.v(Globals.TAG, "getItem --> " + pos);
 
         Fragment fragment = null;
-        if (pos < this.data.size()) {
+
+        if (this.data.size() == 0) {
+
+            fragment = new Fragment();
+
+        }
+        else if ((this.data.size() > 0) && (pos < this.data.size())) {
 
             fragment = QuestionFragment.newInstance();
 
@@ -86,8 +94,16 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
             Bundle bundle = new Bundle();
             bundle.putParcelable(Globals.QUESTION_PARCEL, parcel);
             fragment.setArguments(bundle);
-        } else {
-            fragment = new Fragment();
+        }
+        else {
+
+            fragment = new QuestionsSummaryFragment();
+
+            // need to pass all questions to summary fragment
+            // QuestionParcel parcel = this.data.get(pos);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(Globals.ALL_QUESTIONS_PARCEL, this.data);
+            fragment.setArguments(bundle);
         }
 
         return fragment;
