@@ -49,9 +49,6 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
                 for (DataSnapshot child : snapshot.getChildren()) {
 
                     QuestionModel questionModel = child.getValue(QuestionModel.class);
-                    Log.v(Globals.TAG, "  --> update: got question:");
-                    Log.v(Globals.TAG, questionModel.toString());
-
                     int position = QuestionsAdapter.this.data.size();
                     QuestionParcel parcel = new QuestionParcel(position, questionModel);
                     QuestionsAdapter.this.data.add(parcel);

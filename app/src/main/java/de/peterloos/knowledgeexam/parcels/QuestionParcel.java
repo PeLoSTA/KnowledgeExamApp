@@ -19,6 +19,9 @@ public class QuestionParcel implements Parcelable {
     private boolean[] results;
     private boolean[] userResults;
 
+    private boolean singleChoice;  // TODO: Diese ist 'berechnet' / 'computed'
+                                   // TODO: klaren, ob ich diese Variable wirklich brauche ...
+
     // static field used to regenerate object, individually or as array
     public static final Parcelable.Creator<QuestionParcel> CREATOR =
             new Parcelable.Creator<QuestionParcel>() {
@@ -39,6 +42,9 @@ public class QuestionParcel implements Parcelable {
         pc.readStringArray(this.getAnswers());
         pc.readBooleanArray(this.getResults());
         pc.readBooleanArray(this.getUserResults());
+
+        // compute 'singleChoice' member variable
+        this.setSingleChoice(this.computeSingleChoice());
     }
 
     // user-defined c'tor(s)
@@ -73,6 +79,9 @@ public class QuestionParcel implements Parcelable {
         // provide (yet) empty array of users answers
         boolean[] usersAnswers = new boolean[numAnswers];
         this.setUserResults(usersAnswers);
+
+        // compute 'singleChoice' member variable
+        this.setSingleChoice(this.computeSingleChoice());
     }
 
     @Override
@@ -147,6 +156,14 @@ public class QuestionParcel implements Parcelable {
         this.userResults[index] = value;
     }
 
+    public boolean isSingleChoice() {
+        return singleChoice;
+    }
+
+    public void setSingleChoice(boolean singleChoice) {
+        this.singleChoice = singleChoice;
+    }
+
     @Override
     public String toString() {
         return this.print();
@@ -185,5 +202,15 @@ public class QuestionParcel implements Parcelable {
         }
 
         return sb.toString();
+    }
+
+    // private helper methods
+    private boolean computeSingleChoice() {
+        int sumCorrectAnswers = 0;
+        for (int i = 0; i < this.results.length; i ++) {
+            if (this.results[i])
+                sumCorrectAnswers++;
+        }
+        return (sumCorrectAnswers == 1) ? true : false;
     }
 }

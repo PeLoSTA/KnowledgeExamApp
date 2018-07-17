@@ -23,6 +23,7 @@ public class QuestionsSummaryFragment extends Fragment {
 
     private ListView lvSummary;
     private Button btnSend;
+    private QuestionsSummaryAdapter adapter;
 
     // no-args c'tor required
     public QuestionsSummaryFragment() {
@@ -39,37 +40,39 @@ public class QuestionsSummaryFragment extends Fragment {
 
         // extract this fragment's question from bundle
         Bundle bundle = this.getArguments();
+        ArrayList<QuestionParcel> parcels = null;
         if (bundle != null) {
 
-            ArrayList<QuestionParcel> summary = bundle.getParcelableArrayList(Globals.ALL_QUESTIONS_PARCEL);
+            parcels = bundle.getParcelableArrayList(Globals.ALL_QUESTIONS_PARCEL);
 
             Log.v(Globals.TAG, "QuestionsSummaryFragment::onViewCreated");
-            Log.v(Globals.TAG, "  --> all questions:  " + summary.size());
-
-//            for (int i = 0; i < summary.size(); i++) {
-//
-//                QuestionParcel parcel = summary.get(i);
-//                Log.v(Globals.TAG, parcel.toString());
-//                Log.v(Globals.TAG, "-------------------------------------------------------");
-//            }
+            Log.v(Globals.TAG, "  --> all questions:  " + parcels.size());
         } else {
             Log.e(Globals.TAG, "NO Bundle found !!!");
         }
 
         // setup UI
         this.lvSummary = view.findViewById(R.id.listviewSummary);
-        List<QuestionSummaryModel> values = new ArrayList<>();
+        List<QuestionSummaryModel> summary = new ArrayList<>();
 
-        // just for testing
-        for (int i = 0; i < 25; i++) {
+        if (parcels != null) {
 
-            QuestionSummaryModel value = new QuestionSummaryModel();
-            value.setQuestionNumber(i+1);
-            values.add(value);
+            for (int i = 0; i < parcels.size(); i++) {
+
+                QuestionParcel parcel = parcels.get(i);
+
+                QuestionSummaryModel model = new QuestionSummaryModel();
+                model.setQuestionNumber(i+1);
+                model.setNumberAnswers(parcel.getNumberAnswers());
+                model.setUserResults(parcel.getUserResults());
+                model.setSingleChoice(parcel.isSingleChoice());
+
+                summary.add(model);
+            }
         }
 
-        QuestionsSummaryAdapter adapter = new QuestionsSummaryAdapter(this.getContext(), values);
-        this.lvSummary.setAdapter(adapter);
+        this.adapter = new QuestionsSummaryAdapter(this.getContext(), summary);
+        this.lvSummary.setAdapter(this.adapter);
 
         // setup UI
         this.btnSend = view.findViewById(R.id.buttonSend);

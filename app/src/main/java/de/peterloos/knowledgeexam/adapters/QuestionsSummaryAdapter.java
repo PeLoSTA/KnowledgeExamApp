@@ -8,7 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -17,6 +21,10 @@ import de.peterloos.knowledgeexam.R;
 import de.peterloos.knowledgeexam.models.QuestionSummaryModel;
 
 public class QuestionsSummaryAdapter extends ArrayAdapter<QuestionSummaryModel> {
+
+    private enum WhichButton {UseRadioButton, UseCheckBox}
+
+    ;
 
     private Context context;
 
@@ -42,15 +50,69 @@ public class QuestionsSummaryAdapter extends ArrayAdapter<QuestionSummaryModel> 
         String s = String.format("Frage %d", pos);
         tv.setText(s);
 
-        // assign drawable to this imageView
-        ImageView iv = rowView.findViewById(R.id.ivQuestionAnswered);
+        // construct horizontal row of checkboxes / radio buttons
+        LinearLayout layoutUsersAnswers = rowView.findViewById(R.id.users_answers);
+
+        WhichButton whichButton = (questionSummaryModel.isSingleChoice()) ?
+            WhichButton.UseRadioButton :
+            WhichButton.UseCheckBox;
+
+        boolean[] userResults = questionSummaryModel.getUserResults();
+        for (int i = 0; i < questionSummaryModel.getNumberAnswers(); i++) {
+
+            CompoundButton button = (whichButton == WhichButton.UseRadioButton) ?
+                new RadioButton(this.getContext()) :
+                new CheckBox(this.getContext());
+            button.setEnabled(false);
+
+            if (userResults[i]) {
+                button.setChecked(true);
+            }
+
+            layoutUsersAnswers.addView(button);
+        }
+
+
+                // CompoundButton
+//        if (questionSummaryModel.isSingleChoice()) {
+//
+//            boolean[] userResults = questionSummaryModel.getUserResults();
+//            for (int i = 0; i < questionSummaryModel.getNumberAnswers(); i++) {
+//
+//                RadioButton rb = new RadioButton(this.getContext());
+//                rb.setEnabled(false);
+//
+//                if (userResults[i]) {
+//                    rb.setChecked(true);
+//                }
+//
+//                layoutUsersAnswers.addView(rb);
+//            }
+//        }
+//        else {
+//
+//            boolean[] userResults = questionSummaryModel.getUserResults();
+//            for (int i = 0; i < questionSummaryModel.getNumberAnswers(); i++) {
+//
+//                CheckBox cb = new CheckBox(this.getContext());
+//                cb.setEnabled(false);
+//
+//                if (userResults[i]) {
+//                    cb.setChecked(true);
+//                }
+//
+//                layoutUsersAnswers.addView(cb);
+//            }
+//        }
+
+                // assign drawable to this imageView
+                ImageView iv = rowView.findViewById(R.id.ivQuestionAnswered);
 
         Drawable drawable = null;
         if (pos % 2 == 0) {
 
             drawable = ContextCompat.getDrawable(this.context, R.drawable.minus_box);
-        }
-        else {
+        } else {
             drawable = ContextCompat.getDrawable(this.context, R.drawable.checkbox_marked);
         }
 
