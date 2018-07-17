@@ -1,17 +1,19 @@
 package de.peterloos.knowledgeexam.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import de.peterloos.knowledgeexam.R;
-import de.peterloos.knowledgeexam.models.ExamModel;
 import de.peterloos.knowledgeexam.models.QuestionSummaryModel;
 
 public class QuestionsSummaryAdapter extends ArrayAdapter<QuestionSummaryModel> {
@@ -39,6 +41,21 @@ public class QuestionsSummaryAdapter extends ArrayAdapter<QuestionSummaryModel> 
         // tv.setText(questionSummaryModel.getPin());
         String s = String.format("Frage %d", pos);
         tv.setText(s);
+
+        // assign drawable to this imageView
+        ImageView iv = rowView.findViewById(R.id.ivQuestionAnswered);
+
+        Drawable drawable = null;
+        if (pos % 2 == 0) {
+
+            drawable = ContextCompat.getDrawable(this.context, R.drawable.minus_box);
+        }
+        else {
+            drawable = ContextCompat.getDrawable(this.context, R.drawable.checkbox_marked);
+        }
+
+        iv.setImageDrawable(drawable);
+
         return rowView;
     }
 }

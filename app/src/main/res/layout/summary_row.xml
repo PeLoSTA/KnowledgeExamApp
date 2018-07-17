@@ -7,21 +7,26 @@
     android:paddingTop="3dp"
     android:paddingBottom="3dp">
 
+    <ImageView
+        android:id="@+id/ivQuestionAnswered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:paddingEnd="10dp"
+        android:layout_alignParentStart="true" />
+
     <TextView
         android:id="@+id/labelQuestionNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/ivQuestionAnswered"
         android:text="ABC"
         android:textSize="20sp" />
 
     <!--  https://materialdesignicons.com/  -->
 
-    <CheckBox
-        android:id="@+id/checkQuestionAnswered"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:buttonTint="#ffFF0000"
-        android:layout_toEndOf="@+id/labelQuestionNumber"/>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
