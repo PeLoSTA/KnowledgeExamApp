@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
-import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,8 +15,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.fragments.QuestionFragment;
@@ -75,10 +72,9 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int pos) {
 
-        Log.v(Globals.TAG, "getItem --> " + pos);
+        Log.v(Globals.TAG, "QuestionsAdapter::getItem --> " + pos);
 
         Fragment fragment = null;
-
         if (this.data.size() == 0) {
 
             fragment = new Fragment();
@@ -114,29 +110,14 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
         question.setUsersAnswer(answerPosition, checked);
         Log.v(Globals.TAG, "PagerAdapter ### ===> Frage = " + questionNumber + ", Antwort zu " + answerPosition + ", checked = " + checked);
 
+        // need to update summary fragment, if it's loaded:
+        // https://stackoverflow.com/questions/10849552/update-viewpager-dynamically/17855730
         this.notifyDataSetChanged();
-
-        // need to update summary fragment, if it's loaded
-        // View lastView = this.viewPager.findViewWithTag("FRAGMENT_SUMMARY");
     }
 
-    // https://stackoverflow.com/questions/10849552/update-viewpager-dynamically/17855730
-
     @Override
-    public int getItemPosition(Object object) {
-
-        String msg = String.format(Locale.getDefault(), "getItemPosition >>> %s <<<", object.toString());
-
-        Log.v(Globals.TAG, msg);
-
-        if (object instanceof QuestionsSummaryFragment) {
-
-            return POSITION_NONE;
-        }
-        else {
-
-            return POSITION_UNCHANGED;
-        }
+    public int getItemPosition(Object obj) {
+        return (obj instanceof QuestionsSummaryFragment) ? POSITION_NONE : POSITION_UNCHANGED;
     }
 
     // private helper methods

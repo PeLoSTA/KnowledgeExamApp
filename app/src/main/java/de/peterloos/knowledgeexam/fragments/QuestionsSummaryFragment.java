@@ -39,19 +39,11 @@ public class QuestionsSummaryFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // TODO:
-        // VERSUCH, die Summary Activity zu updaten !?!?!?!?
-        view.setTag("FRAGMENT_SUMMARY");
-
         // extract this fragment's question from bundle
         Bundle bundle = this.getArguments();
         ArrayList<QuestionParcel> parcels = null;
         if (bundle != null) {
-
             parcels = bundle.getParcelableArrayList(Globals.ALL_QUESTIONS_PARCEL);
-
-            Log.v(Globals.TAG, "QuestionsSummaryFragment::onViewCreated");
-            Log.v(Globals.TAG, "  --> all questions:  " + parcels.size());
         } else {
             Log.e(Globals.TAG, "NO Bundle found !!!");
         }
@@ -61,11 +53,9 @@ public class QuestionsSummaryFragment extends Fragment {
         List<QuestionSummaryModel> summary = new ArrayList<>();
 
         if (parcels != null) {
-
             for (int i = 0; i < parcels.size(); i++) {
 
                 QuestionParcel parcel = parcels.get(i);
-
                 QuestionSummaryModel model = new QuestionSummaryModel();
                 model.setQuestionNumber(i+1);
                 model.setNumberAnswers(parcel.getNumberAnswers());

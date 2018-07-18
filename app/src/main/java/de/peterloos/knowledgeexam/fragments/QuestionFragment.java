@@ -119,15 +119,15 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
         super.onDetach();
     }
 
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        Log.v(Globals.TAG, "QuestionFragment::onDestroy");
-//    }
-//
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        Log.v(Globals.TAG, "QuestionFragment::onDestroyView");
-//    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.v(Globals.TAG, "QuestionFragment::onDestroy");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.v(Globals.TAG, "QuestionFragment::onDestroyView");
+    }
 }
