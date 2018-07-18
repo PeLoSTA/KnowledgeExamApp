@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
+import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.fragments.QuestionFragment;
@@ -111,6 +113,28 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
         QuestionParcel question = this.data.get(questionNumber);
         question.setUsersAnswer(answerPosition, checked);
         Log.v(Globals.TAG, "PagerAdapter ### ===> Frage = " + questionNumber + ", Antwort zu " + answerPosition + ", checked = " + checked);
+
+        this.notifyDataSetChanged();
+
+        // need to update summary fragment, if it's loaded
+        // View lastView = this.viewPager.findViewWithTag("FRAGMENT_SUMMARY");
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+
+        String msg = String.format(Locale.getDefault(), "getItemPosition >>> %s <<<", object.toString());
+
+        Log.v(Globals.TAG, msg);
+
+        if (object instanceof QuestionsSummaryFragment) {
+
+            return POSITION_NONE;
+        }
+        else {
+
+            return POSITION_UNCHANGED;
+        }
     }
 
     // private helper methods

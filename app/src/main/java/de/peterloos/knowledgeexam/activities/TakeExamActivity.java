@@ -4,6 +4,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.Locale;
@@ -37,7 +38,7 @@ public class TakeExamActivity extends AppCompatActivity implements OnQuestionAnd
         if (extras != null) {
 
             this.parcel = this.getIntent().getParcelableExtra(Globals.EXAM_PARCEL);
-            Log.v(Globals.TAG, parcel.toString());
+            // Log.v(Globals.TAG, parcel.toString());
         }
 
         // create the adapter that will return a fragment for each question
@@ -54,16 +55,26 @@ public class TakeExamActivity extends AppCompatActivity implements OnQuestionAnd
     @Override
     public void answerOfQuestionSelected(int questionNumber, int answerPosition, boolean checked) {
 
-        if (checked) {
-            String text = String.format(
-                Locale.getDefault(),
-                "Selected Answer No. %d - Question No. %d",
-                questionNumber,
-                answerPosition);
-
-            Toast.makeText(this.getBaseContext(), text, Toast.LENGTH_SHORT).show();
-        }
+//        if (checked) {
+//            String text = String.format(
+//                Locale.getDefault(),
+//                "Selected Answer No. %d - Question No. %d",
+//                questionNumber,
+//                answerPosition);
+//
+//            Toast.makeText(this.getBaseContext(), text, Toast.LENGTH_SHORT).show();
+//        }
 
         this.questionsAdapter.updateAnswer(questionNumber, answerPosition, checked);
+
+//        View lastView = this.viewPager.findViewWithTag("FRAGMENT_SUMMARY");
+//
+//        if (lastView == null) {
+//
+//            Toast.makeText(this.getBaseContext(), "NULL", Toast.LENGTH_SHORT).show();
+//        }
+//        else {
+//            Toast.makeText(this.getBaseContext(), "NO NULL", Toast.LENGTH_SHORT).show();
+//        }
     }
 }

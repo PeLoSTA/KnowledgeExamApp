@@ -42,6 +42,7 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Log.v(Globals.TAG, "QuestionFragment::onCreateView");
         return inflater.inflate(R.layout.fragment_question, container, false);
     }
 
@@ -52,10 +53,10 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
         // extract this fragment's question from bundle
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            question = bundle.getParcelable(Globals.QUESTION_PARCEL);
-            Log.v(Globals.TAG, "FragmentQuestion::onViewCreated");
-            Log.v(Globals.TAG, "  --> current question:");
-            Log.v(Globals.TAG, question.toString());
+            this.question = bundle.getParcelable(Globals.QUESTION_PARCEL);
+//            Log.v(Globals.TAG, "FragmentQuestion::onViewCreated");
+//            Log.v(Globals.TAG, "  --> current question:");
+//            Log.v(Globals.TAG, this.question.toString());
         }
         else {
             Log.e(Globals.TAG, "NO Bundle found !!!");
@@ -117,4 +118,16 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
         this.listener = null;
         super.onDetach();
     }
+
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        Log.v(Globals.TAG, "QuestionFragment::onDestroy");
+//    }
+//
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        Log.v(Globals.TAG, "QuestionFragment::onDestroyView");
+//    }
 }

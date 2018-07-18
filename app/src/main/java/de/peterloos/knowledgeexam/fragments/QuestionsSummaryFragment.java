@@ -31,12 +31,17 @@ public class QuestionsSummaryFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.v(Globals.TAG, "QuestionsSummaryFragment::onCreateView");
         return inflater.inflate(R.layout.fragment_questions_summary, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // TODO:
+        // VERSUCH, die Summary Activity zu updaten !?!?!?!?
+        view.setTag("FRAGMENT_SUMMARY");
 
         // extract this fragment's question from bundle
         Bundle bundle = this.getArguments();
@@ -82,5 +87,17 @@ public class QuestionsSummaryFragment extends Fragment {
                 Log.v(Globals.TAG, "arghhh");
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.v(Globals.TAG, "QuestionsSummaryFragment::onDestroy");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.v(Globals.TAG, "QuestionsSummaryFragment::onDestroyView");
     }
 }
