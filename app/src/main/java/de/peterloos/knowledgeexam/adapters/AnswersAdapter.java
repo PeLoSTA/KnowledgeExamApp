@@ -16,9 +16,9 @@ import java.util.Locale;
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.R;
 import de.peterloos.knowledgeexam.interfaces.OnAnswersListener;
-import de.peterloos.knowledgeexam.models.Answer;
+import de.peterloos.knowledgeexam.models.AnswerModel;
 
-public class AnswersAdapter extends ArrayAdapter<Answer> {
+public class AnswersAdapter extends ArrayAdapter<AnswerModel> {
 
     private final int resource;
     private boolean useCheckBox;
@@ -30,8 +30,8 @@ public class AnswersAdapter extends ArrayAdapter<Answer> {
     }
 
     // c'tor
-    public AnswersAdapter(@NonNull Context context, int resource, @NonNull Answer[] answers, boolean useCheckBox) {
-        super(context, resource, answers);
+    public AnswersAdapter(@NonNull Context context, int resource, @NonNull AnswerModel[] answerModels, boolean useCheckBox) {
+        super(context, resource, answerModels);
         this.resource = resource;
         this.listener = null;
         this.useCheckBox = useCheckBox;
@@ -69,12 +69,12 @@ public class AnswersAdapter extends ArrayAdapter<Answer> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Answer answer = this.getItem(position);
+        AnswerModel answerModel = this.getItem(position);
 
         if (this.useCheckBox) {
             viewHolder.radioButton.setVisibility(View.INVISIBLE);
-            viewHolder.checkbox.setText(answer.getAnswer());
-            viewHolder.checkbox.setChecked(answer.getChecked());
+            viewHolder.checkbox.setText(answerModel.getAnswer());
+            viewHolder.checkbox.setChecked(answerModel.getChecked());
             viewHolder.checkbox.setTag(position);
             viewHolder.checkbox.setOnClickListener(new View.OnClickListener() {
 
@@ -92,8 +92,8 @@ public class AnswersAdapter extends ArrayAdapter<Answer> {
             });
         } else {
             viewHolder.checkbox.setVisibility(View.INVISIBLE);
-            viewHolder.radioButton.setText(answer.getAnswer());
-            viewHolder.radioButton.setChecked(answer.getChecked());
+            viewHolder.radioButton.setText(answerModel.getAnswer());
+            viewHolder.radioButton.setChecked(answerModel.getChecked());
             viewHolder.radioButton.setTag(position);
             viewHolder.radioButton.setOnClickListener(new View.OnClickListener() {
 

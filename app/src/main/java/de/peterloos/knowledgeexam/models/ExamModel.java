@@ -5,7 +5,7 @@ import com.google.firebase.database.PropertyName;
 import java.util.Locale;
 import java.util.Map;
 
-public class Exam {
+public class ExamModel {
 
     private String description;
     private String pin;
@@ -13,18 +13,8 @@ public class Exam {
     private Map<String, String> questions;
 
     // mandatory: default constructor that takes no arguments
-    public Exam() {
+    public ExamModel() {
     }
-
-    @Override
-    public String toString() {
-        return this.print();
-    }
-
-//    @Override
-//    public String toString() {
-//        return this.pin;
-//    }
 
     @SuppressWarnings("unused")
     public String getDescription() {
@@ -68,8 +58,13 @@ public class Exam {
         this.numQuestions = num_questions;
     }
 
+    @Override
+    public String toString() {
+        return this.print();
+    }
+
     @SuppressWarnings("unused")
-    public String print() {
+    private String print() {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("Pin: %s", this.pin));
         sb.append(" - ");
@@ -79,7 +74,7 @@ public class Exam {
         sb.append(System.getProperty("line.separator"));
 
         for (String key : this.questions.values()) {
-            sb.append(String.format("    Question: %s", key));
+            sb.append(String.format("    QuestionModel: %s", key));
             sb.append(System.getProperty("line.separator"));
         }
 

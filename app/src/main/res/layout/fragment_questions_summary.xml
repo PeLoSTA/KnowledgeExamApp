@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.QuestionsSummaryFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="12dp">
+
+        <TextView
+            android:id="@+id/textviewSummaryHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="4dp"
+            android:text="Zusammenfassung:"
+            android:textSize="20sp" />
+
+        <View
+            android:id="@+id/horizontalRuler"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/textviewSummaryHeader"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#888888"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ListView
+            android:id="@+id/listviewSummary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/horizontalRuler"
+            android:layout_above="@+id/buttonSend"/>
+
+        <Button
+            android:id="@+id/buttonSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="Finish Test" />
+
+    </RelativeLayout>
+
+</FrameLayout>
+

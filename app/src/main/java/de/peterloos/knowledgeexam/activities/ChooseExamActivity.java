@@ -17,8 +17,8 @@ import java.util.Locale;
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.R;
 import de.peterloos.knowledgeexam.adapters.ExamsAdapter;
-import de.peterloos.knowledgeexam.models.Exam;
-import de.peterloos.knowledgeexam.models.ExamParcel;
+import de.peterloos.knowledgeexam.models.ExamModel;
+import de.peterloos.knowledgeexam.parcels.ExamParcel;
 
 public class ChooseExamActivity extends AppCompatActivity
         implements AdapterView.OnItemClickListener, View.OnClickListener {
@@ -30,7 +30,7 @@ public class ChooseExamActivity extends AppCompatActivity
 
     // miscellaneous
     private ExamsAdapter adapter;
-    private Exam exam;
+    private ExamModel examModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +60,9 @@ public class ChooseExamActivity extends AppCompatActivity
         Toast.makeText(this.getApplicationContext(), "Xeahhhh", Toast.LENGTH_SHORT).show();
 
         AlertDialog alertDialog = new AlertDialog.Builder(ChooseExamActivity.this).create();
-        alertDialog.setTitle("Start Exam"); //set title
+        alertDialog.setTitle("Start ExamModel"); //set title
         String msg = String.format(Locale.getDefault(),
-                "Do you want to start the selected exam with pin %s", this.exam.getPin());
+                "Do you want to start the selected examModel with pin %s", this.examModel.getPin());
         alertDialog.setMessage(msg); //set Message
         alertDialog.setIcon(R.drawable.ic_launcher_background); //set icon/image
         // TODO: Wie sieht dieses Icon aus ???
@@ -72,7 +72,7 @@ public class ChooseExamActivity extends AppCompatActivity
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 Intent intent = new Intent(getApplicationContext(), TakeExamActivity.class);
-                ExamParcel parcel = new ExamParcel(ChooseExamActivity.this.exam);
+                ExamParcel parcel = new ExamParcel(ChooseExamActivity.this.examModel);
                 intent.putExtra(Globals.EXAM_PARCEL, parcel);
                 ChooseExamActivity.this.startActivity(intent);
             }
@@ -90,7 +90,7 @@ public class ChooseExamActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        this.exam = this.adapter.getItem(i);
-        this.etSelectedExam.setText(this.exam.getPin());
+        this.examModel = this.adapter.getItem(i);
+        this.etSelectedExam.setText(this.examModel.getPin());
     }
 }

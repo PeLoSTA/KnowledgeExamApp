@@ -1,7 +1,6 @@
 package de.peterloos.knowledgeexam.fragments;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,8 +18,8 @@ import de.peterloos.knowledgeexam.R;
 import de.peterloos.knowledgeexam.adapters.AnswersAdapter;
 import de.peterloos.knowledgeexam.interfaces.OnAnswersListener;
 import de.peterloos.knowledgeexam.interfaces.OnQuestionAndAnswersListener;
-import de.peterloos.knowledgeexam.models.Answer;
-import de.peterloos.knowledgeexam.models.QuestionParcel;
+import de.peterloos.knowledgeexam.models.AnswerModel;
+import de.peterloos.knowledgeexam.parcels.QuestionParcel;
 
 public class QuestionFragment extends Fragment implements OnAnswersListener {
 
@@ -29,7 +28,6 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
     private ListView lvAnswers;
 
     // data of this question
-    // TODO: DAS IST ZU KLÄREN, OB EINE PARCEL KLASSE HIER GEEIGNET IST ....
     private QuestionParcel question;
 
     private OnQuestionAndAnswersListener listener;
@@ -44,7 +42,7 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // inflate the layout for this fragment
+        // Log.v(Globals.TAG, "QuestionFragment::onCreateView");
         return inflater.inflate(R.layout.fragment_question, container, false);
     }
 
@@ -52,55 +50,42 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.setBackgroundColor(Color.RED);
+        // extract this fragment's question from bundle
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            this.question = bundle.getParcelable(Globals.QUESTION_PARCEL);
+//            Log.v(Globals.TAG, "FragmentQuestion::onViewCreated");
+//            Log.v(Globals.TAG, "  --> current question:");
+//            Log.v(Globals.TAG, this.question.toString());
+        }
+        else {
+            Log.e(Globals.TAG, "NO Bundle found !!!");
+        }
 
+        // setup UI
         this.tvQuestionHeader = view.findViewById(R.id.textviewQuestionHeader);
         this.tvQuestion = view.findViewById(R.id.textviewQuestion);
         this.lvAnswers = view.findViewById(R.id.listviewAnswers);
-
-        // =============================================================================
-
-        // extract this fragment's question from bundle
-        Bundle bundle = this.getArguments();
-
-        if (bundle != null) {
-            this.question = bundle.getParcelable(Globals.QUESTION_PARCEL);
-
-            Log.v(Globals.TAG, "FragmentQuestion ==> Frage " + question.getQuestion());
-        } else {
-            this.question = new QuestionParcel();
-            this.question.setQuestionNumber(0);
-            this.question.setQuestion("INTERNAL ERROR");
-            this.question.setNumberAnswers(1);
-            this.question.setAnswers(new String[]{"NO ANSWER"});
-            this.question.setCorrectAnswers(new int[]{0});
-
-            // TODO: Die nächste Zeile möglicherweise freischalten
-            // this.question.setUsersAnswer(0, new boolean[] {false});
-        }
-
-        // =============================================================================
-
-        // setup UI
         int number = question.getQuestionNumber();
-        String header = String.format(Locale.getDefault(), "Frage %d:", number);
+        String header = String.format(Locale.getDefault(), "Frage %d:", (number+1));
         this.tvQuestionHeader.setText(header);
         this.tvQuestion.setText(question.getQuestion());
 
-        // setup adapter for ListView with answers and
-        // the latest user input according to these answers
-        Answer[] answers = new Answer[question.getNumberAnswers()];
-        String[] tmp = question.getAnswers();
+        // setup adapter for ListView with answerModels and
+        // the latest user input according to these answerModels
+        AnswerModel[] answerModels = new AnswerModel[question.getNumberAnswers()];
+        String[] answerTexts = question.getAnswers();
+        boolean[] userAnswers = question.getUserResults();
 
         for (int i = 0; i < question.getNumberAnswers(); i++) {
-            answers[i] = new Answer(tmp[i], question.getUsersAnswer(i));
+            answerModels[i] = new AnswerModel(answerTexts[i], userAnswers[i]);
         }
 
-        boolean useCheckBox = (this.question.getCorrectAnswers().length == 1) ? false : true;
+        boolean useCheckBox = this.question.getResults().length != 1;
         AnswersAdapter adapter = new AnswersAdapter(
                 this.getActivity(),
                 R.layout.answer_row,
-                answers,
+                answerModels,
                 useCheckBox
         );
         adapter.addOnAnswersListener(this);
@@ -112,9 +97,6 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
     public void answerSelected(int position, boolean checked) {
 
         if (this.listener != null) {
-
-            Log.v(Globals.TAG, "FragmentQuestion:: answerSelected ===> Frage = " + question.getQuestionNumber() + ", Antwort zu " + position + ", checked = " + checked);
-
             this.listener.answerOfQuestionSelected(question.getQuestionNumber(), position, checked);
         }
     }
@@ -135,5 +117,17 @@ public class QuestionFragment extends Fragment implements OnAnswersListener {
 
         this.listener = null;
         super.onDetach();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.v(Globals.TAG, "QuestionFragment::onDestroy");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.v(Globals.TAG, "QuestionFragment::onDestroyView");
     }
 }
