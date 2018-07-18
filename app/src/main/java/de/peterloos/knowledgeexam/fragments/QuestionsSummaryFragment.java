@@ -1,8 +1,10 @@
 package de.peterloos.knowledgeexam.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +20,18 @@ import java.util.Locale;
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.R;
 import de.peterloos.knowledgeexam.adapters.QuestionsSummaryAdapter;
+import de.peterloos.knowledgeexam.interfaces.OnQuestionAndAnswersListener;
+import de.peterloos.knowledgeexam.interfaces.OnQuestionSelection;
 import de.peterloos.knowledgeexam.models.QuestionSummaryModel;
 import de.peterloos.knowledgeexam.parcels.QuestionParcel;
 
-public class QuestionsSummaryFragment extends Fragment {
+public class QuestionsSummaryFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ListView lvSummary;
     private Button btnSend;
     private QuestionsSummaryAdapter adapter;
+
+    private OnQuestionSelection listener;
 
     // no-args c'tor required
     public QuestionsSummaryFragment() {
@@ -59,7 +65,7 @@ public class QuestionsSummaryFragment extends Fragment {
 
                 QuestionParcel parcel = parcels.get(i);
                 QuestionSummaryModel model = new QuestionSummaryModel();
-                model.setQuestionNumber(i+1);
+                model.setQuestionNumber(i + 1);
                 model.setNumberAnswers(parcel.getNumberAnswers());
                 model.setUserResults(parcel.getUserResults());
                 model.setSingleChoice(parcel.isSingleChoice());
@@ -72,22 +78,45 @@ public class QuestionsSummaryFragment extends Fragment {
         this.lvSummary.setAdapter(this.adapter);
 
         // respond to list view click events
-        this.lvSummary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                String msg = String.format( Locale.getDefault(), "clicked at position %d",  pos);
-                Log.v(Globals.TAG, msg);
-            }
-        });
+        this.lvSummary.setOnItemClickListener(this);
 
         // setup UI
         this.btnSend = view.findViewById(R.id.buttonSend);
-        this.btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.v(Globals.TAG, "arghhh");
-            }
-        });
+        this.btnSend.setOnClickListener(this);
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+        String msg = String.format(Locale.getDefault(), "clicked at position %d", pos);
+        Log.v(Globals.TAG, msg);
+
+        if (this.listener != null) {
+            this.listener.selectQuestion(pos);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        Log.v(Globals.TAG, "clicked on terminate button - not yet implemented");
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            this.listener = (OnQuestionSelection) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnQuestionSelection");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+
+        this.listener = null;
+        super.onDetach();
     }
 
     @Override
