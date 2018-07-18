@@ -120,6 +120,8 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
         // View lastView = this.viewPager.findViewWithTag("FRAGMENT_SUMMARY");
     }
 
+    // https://stackoverflow.com/questions/10849552/update-viewpager-dynamically/17855730
+
     @Override
     public int getItemPosition(Object object) {
 

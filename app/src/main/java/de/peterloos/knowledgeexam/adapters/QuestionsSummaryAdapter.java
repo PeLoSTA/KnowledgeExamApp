@@ -54,7 +54,7 @@ public class QuestionsSummaryAdapter extends ArrayAdapter<QuestionSummaryModel> 
         String s = String.format(Locale.getDefault(), "Frage %d", pos);
         tv.setText(s);
 
-        // construct horizontal row of checkboxes / radio buttons
+        // construct horizontal row of image views
         LinearLayout layoutUsersAnswers = rowView.findViewById(R.id.users_answers);
 
         WhichButton whichButton = (questionSummaryModel.isSingleChoice()) ?
@@ -62,18 +62,33 @@ public class QuestionsSummaryAdapter extends ArrayAdapter<QuestionSummaryModel> 
                 WhichButton.UseCheckBox;
 
         boolean[] userResults = questionSummaryModel.getUserResults();
+
         for (int i = 0; i < questionSummaryModel.getNumberAnswers(); i++) {
 
-            CompoundButton button = (whichButton == WhichButton.UseRadioButton) ?
-                    new RadioButton(this.getContext()) :
-                    new CheckBox(this.getContext());
-            button.setEnabled(false);
+            ImageView iv = new ImageView(this.getContext());
+            Drawable drawable = null;
 
-            if (userResults[i]) {
-                button.setChecked(true);
+            if (whichButton == WhichButton.UseCheckBox) {
+
+                if (userResults[i]) {
+                    drawable = ContextCompat.getDrawable(this.context, R.drawable.checkbox_marked_grey);
+                }
+                else {
+                    drawable = ContextCompat.getDrawable(this.context, R.drawable.checkbox_unmarked);
+                }
+            }
+            else if (whichButton == WhichButton.UseRadioButton) {
+
+                if (userResults[i]) {
+                    drawable = ContextCompat.getDrawable(this.context, R.drawable.radiobutton_marked);
+                }
+                else {
+                    drawable = ContextCompat.getDrawable(this.context, R.drawable.radiobutton_unmarked);
+                }
             }
 
-            layoutUsersAnswers.addView(button);
+            iv.setImageDrawable(drawable);
+            layoutUsersAnswers.addView(iv);
         }
 
         // assign drawable to this imageView
@@ -91,4 +106,53 @@ public class QuestionsSummaryAdapter extends ArrayAdapter<QuestionSummaryModel> 
 
         return rowView;
     }
+
+    // ERSTE VERSION - GEHT !!! - Will die disabled controls mit besser lesbaren .pngs ersetzen !!!
+//    @Override
+//    public View getView(int pos, View convertView, ViewGroup parent) {
+//
+//        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View rowView = inflater.inflate(R.layout.summary_row, parent, false);
+//        TextView tv = rowView.findViewById(R.id.labelQuestionNumber);
+//        QuestionSummaryModel questionSummaryModel = this.getItem(pos);
+//        String s = String.format(Locale.getDefault(), "Frage %d", pos);
+//        tv.setText(s);
+//
+//        // construct horizontal row of checkboxes / radio buttons
+//        LinearLayout layoutUsersAnswers = rowView.findViewById(R.id.users_answers);
+//
+//        WhichButton whichButton = (questionSummaryModel.isSingleChoice()) ?
+//                WhichButton.UseRadioButton :
+//                WhichButton.UseCheckBox;
+//
+//        boolean[] userResults = questionSummaryModel.getUserResults();
+//        for (int i = 0; i < questionSummaryModel.getNumberAnswers(); i++) {
+//
+//            CompoundButton button = (whichButton == WhichButton.UseRadioButton) ?
+//                    new RadioButton(this.getContext()) :
+//                    new CheckBox(this.getContext());
+//            button.setEnabled(false);
+//
+//            if (userResults[i]) {
+//                button.setChecked(true);
+//            }
+//
+//            layoutUsersAnswers.addView(button);
+//        }
+//
+//        // assign drawable to this imageView
+//        ImageView iv = rowView.findViewById(R.id.ivQuestionAnswered);
+//
+//        Drawable drawable = null;
+//        if (pos % 2 == 0) {
+//
+//            drawable = ContextCompat.getDrawable(this.context, R.drawable.minus_box);
+//        } else {
+//            drawable = ContextCompat.getDrawable(this.context, R.drawable.checkbox_marked);
+//        }
+//
+//        iv.setImageDrawable(drawable);
+//
+//        return rowView;
+//    }
 }
