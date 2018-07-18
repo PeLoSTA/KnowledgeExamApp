@@ -6,8 +6,6 @@
     android:paddingTop="3dp"
     android:paddingBottom="3dp">
 
-    <!--  https://materialdesignicons.com/  -->
-
     <ImageView
         android:id="@+id/ivQuestionAnswered"
         android:layout_width="wrap_content"

@@ -9,11 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -52,10 +49,11 @@ public class QuestionsSummaryAdapter extends ArrayAdapter<QuestionSummaryModel> 
         TextView tv = rowView.findViewById(R.id.labelQuestionNumber);
 
         QuestionSummaryModel questionSummaryModel = this.getItem(pos);
-        String s = String.format(Locale.getDefault(), "Frage %d", pos);
+        String s = String.format(Locale.getDefault(), "Frage %d", (pos + 1));
         tv.setText(s);
 
         // construct horizontal row of image views
+        //  Icons see 'https://materialdesignicons.com/'
         LinearLayout layoutUsersAnswers = rowView.findViewById(R.id.users_answers);
 
         WhichButton whichButton = (questionSummaryModel.isSingleChoice()) ?
@@ -63,7 +61,6 @@ public class QuestionsSummaryAdapter extends ArrayAdapter<QuestionSummaryModel> 
                 WhichButton.UseCheckBox;
 
         boolean[] userResults = questionSummaryModel.getUserResults();
-
         for (int i = 0; i < questionSummaryModel.getNumberAnswers(); i++) {
 
             ImageView iv = new ImageView(this.getContext());
@@ -102,8 +99,8 @@ public class QuestionsSummaryAdapter extends ArrayAdapter<QuestionSummaryModel> 
         }
 
         Drawable drawable = (isQuestionAnswered) ?
-            ContextCompat.getDrawable(this.context, R.drawable.checkbox_marked) :
-            ContextCompat.getDrawable(this.context, R.drawable.minus_box);
+                ContextCompat.getDrawable(this.context, R.drawable.checkbox_marked) :
+                ContextCompat.getDrawable(this.context, R.drawable.minus_box);
         iv.setImageDrawable(drawable);
 
         return rowView;

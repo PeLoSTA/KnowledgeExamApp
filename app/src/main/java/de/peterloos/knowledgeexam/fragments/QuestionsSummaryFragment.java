@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.R;
@@ -68,6 +70,15 @@ public class QuestionsSummaryFragment extends Fragment {
 
         this.adapter = new QuestionsSummaryAdapter(this.getContext(), summary);
         this.lvSummary.setAdapter(this.adapter);
+
+        // respond to list view click events
+        this.lvSummary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                String msg = String.format( Locale.getDefault(), "clicked at position %d",  pos);
+                Log.v(Globals.TAG, msg);
+            }
+        });
 
         // setup UI
         this.btnSend = view.findViewById(R.id.buttonSend);
