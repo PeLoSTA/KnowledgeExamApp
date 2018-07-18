@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,13 @@ public class QuestionsSummaryAdapter extends ArrayAdapter<QuestionSummaryModel> 
         for (int i = 0; i < questionSummaryModel.getNumberAnswers(); i++) {
 
             ImageView iv = new ImageView(this.getContext());
+
+            // apply padding
+            float paddingDp = 3f;
+            // convert to pixels
+            int paddingPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, paddingDp, context.getResources().getDisplayMetrics());
+            iv.setPadding(0, paddingPx, 0, paddingPx);
+
             Drawable drawable = null;
 
             if (whichButton == WhichButton.UseCheckBox) {
