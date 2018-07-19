@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +18,8 @@ import java.util.Locale;
 
 import de.peterloos.knowledgeexam.Globals;
 import de.peterloos.knowledgeexam.R;
+import de.peterloos.knowledgeexam.activities.TakeExamActivity;
 import de.peterloos.knowledgeexam.adapters.QuestionsSummaryAdapter;
-import de.peterloos.knowledgeexam.interfaces.OnQuestionAndAnswersListener;
 import de.peterloos.knowledgeexam.interfaces.OnQuestionSelection;
 import de.peterloos.knowledgeexam.models.QuestionSummaryModel;
 import de.peterloos.knowledgeexam.parcels.QuestionParcel;
@@ -30,6 +29,8 @@ public class QuestionsSummaryFragment extends Fragment implements View.OnClickLi
     private ListView lvSummary;
     private Button btnSend;
     private QuestionsSummaryAdapter adapter;
+
+    private TakeExamActivity baseActivity;
 
     private OnQuestionSelection listener;
 
@@ -83,8 +84,9 @@ public class QuestionsSummaryFragment extends Fragment implements View.OnClickLi
         // setup UI
         this.btnSend = view.findViewById(R.id.buttonSend);
         this.btnSend.setOnClickListener(this);
-    }
 
+        this.baseActivity = (TakeExamActivity) this.getActivity();
+    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
@@ -99,6 +101,15 @@ public class QuestionsSummaryFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         Log.v(Globals.TAG, "clicked on terminate button - not yet implemented");
+
+        // this.baseActivity = (TakeExamActivity) this.getActivity();
+
+        // Log.v(Globals.TAG, "Found activity "  +this.baseActivity.toString());
+
+        if (this.baseActivity != null) {
+
+            this.baseActivity.postResults();
+        }
     }
 
     @Override
