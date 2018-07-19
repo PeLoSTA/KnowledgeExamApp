@@ -63,4 +63,10 @@ public class TakeExamActivity extends AppCompatActivity implements OnQuestionAnd
 
         this.viewPager.setCurrentItem(number, true);
     }
+
+    // public interface
+    public void postResults () {
+
+        this.questionsAdapter.postResults();
+    }
 }

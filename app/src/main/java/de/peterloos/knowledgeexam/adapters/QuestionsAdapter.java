@@ -120,6 +120,13 @@ public class QuestionsAdapter extends FragmentPagerAdapter {
         return (obj instanceof QuestionsSummaryFragment) ? POSITION_NONE : POSITION_UNCHANGED;
     }
 
+    // public interface
+    public void postResults () {
+
+        // collect results
+
+    }
+
     // private helper methods
 //    private void setupQuestions2(int index) {
 //
